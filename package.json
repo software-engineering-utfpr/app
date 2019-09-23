@@ -1,0 +1,36 @@
+{
+  "name": "riodocampolimpo",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "react-native start",
+    "android": "react-native run-android",
+    "log:android": "react-native log-android",
+    "build:android": "cd android && gradlew assembleRelease && cd ..",
+    "android:release": "react-native run-android --variant=release",
+    "test": "jest",
+    "lint": "eslint --fix ."
+  },
+  "dependencies": {
+    "antd-mobile-rn": "^2.3.3",
+    "axios": "^0.19.0",
+    "moment": "^2.24.0",
+    "react": "16.8.6",
+    "react-native": "0.60.5",
+    "react-native-gesture-handler": "^1.4.1",
+    "react-navigation": "^3.12.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.0",
+    "@babel/runtime": "^7.6.0",
+    "@react-native-community/eslint-config": "^0.0.5",
+    "babel-jest": "^24.9.0",
+    "eslint": "^6.4.0",
+    "jest": "^24.9.0",
+    "metro-react-native-babel-preset": "^0.56.0",
+    "react-test-renderer": "16.8.6"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
