@@ -48,8 +48,8 @@ const login = (phone, password, callback) => {
     const token = resUser.data.token;
 
     DB.transaction(txn => {
-      txn.executeSql('INSERT INTO user (id, phone, cpf, name, token) VALUES (?, ?, ?, ?, ?)', [
-        user._id, user.phone, user.cpf, user.name, token
+      txn.executeSql('INSERT INTO user (id, phone, cpf, name, image, token) VALUES (?, ?, ?, ?, ?, ?)', [
+        user._id, user.phone, user.cpf, user.name, user.image, token
       ], (tx, res) => {
         callback();
       }, err => {
@@ -62,10 +62,10 @@ const login = (phone, password, callback) => {
 };
 
 const updateUserLocal = (
-	phone, cpf, name, callback
+	phone, cpf, name, image, callback
 ) => {
 	DB.transaction(txn => {
-		txn.executeSql('UPDATE user SET name = ?, cpf = ?, phone = ? WHERE phone = ?', [name, cpf, phone, phone], (_txn, res) => {
+		txn.executeSql('UPDATE user SET name = ?, cpf = ?, phone = ?, image = ? WHERE phone = ?', [name, cpf, phone, image, phone], (_txn, res) => {
       callback(res);
     });
 	});
