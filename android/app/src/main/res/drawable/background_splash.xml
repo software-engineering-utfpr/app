@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
   <item android:drawable="@color/primary" />
+
+  <item
+    android:drawable="@drawable/upwave"
+    android:height="93dp"
+  />
+
   <item
     android:width="200dp"
     android:height="200dp"
     android:drawable="@drawable/logo"
     android:gravity="center"
+  />
+
+  <item
+    android:paddingBottom="50dp"
+    android:drawable="@drawable/downwave"
+    android:height="185dp"
+    android:gravity="bottom"
   />
 </layer-list>

@@ -6,7 +6,7 @@ import Router from './router';
 const App = () => {
 	return (
 		<>
-			<StatusBar barStyle = "light-content" backgroundColor = "#2089DC" />
+			<StatusBar barStyle = "light-content" backgroundColor = "#5ECC62" />
 			<Router />
 		</>
 	);
