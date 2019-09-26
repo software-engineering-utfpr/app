@@ -1,12 +1,16 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 
 import './styles';
 
 const Home = props => {
 	const { navigate } = props.navigation;
 
-	return <View />;
+	return (
+		<View>
+			<Text> Home </Text>
+		</View>
+	);
 };
 
 export default Home;

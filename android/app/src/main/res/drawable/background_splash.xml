@@ -3,6 +3,7 @@
   <item android:drawable="@color/primary" />
 
   <item
+    android:top="30dp"
     android:drawable="@drawable/upwave"
     android:height="93dp"
   />
@@ -15,7 +16,7 @@
   />
 
   <item
-    android:paddingBottom="50dp"
+    android:bottom="50dp"
     android:drawable="@drawable/downwave"
     android:height="185dp"
     android:gravity="bottom"
