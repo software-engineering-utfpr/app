@@ -25,19 +25,13 @@ const authentication = createStackNavigator({
 		}
 	}
 }, {
-	initialRouteName: 'Login',
+	initialRouteName: 'Login'
 });
 
 const app = createDrawerNavigator({
 	Home
 }, {
-	initialRouteName: 'Home',
-	drawerBackgroundColor: 'rgba(255, 255, 255, .9)',
-	overlayColor: 'rgba(255, 255, 255, .7)',
-	contentOptions: {
-		activeTintColor: 'rgb(255, 255, 255)',
-		activeBackgroundColor: '#c0392b'
-	}
+	initialRouteName: 'Home'
 });
 
 const Router = createAppContainer(

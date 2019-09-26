@@ -1,12 +1,14 @@
 import React from 'react';
 import { View } from 'react-native';
 
+import { checkUser } from './stories';
+
 const Splash = props => {
 	const { navigate } = props.navigation;
 
-	setTimeout(() => {
-		navigate('Auth');
-	}, 500);
+	checkUser(() => {
+		setTimeout(() => navigate('Auth'), 500);
+	});
 
 	return <View />;
 };

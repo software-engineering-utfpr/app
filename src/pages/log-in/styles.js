@@ -41,6 +41,10 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
 
+  error: {
+    backgroundColor: '#FF8A8C'
+  },
+
   label: {
     fontFamily: 'QuestrialRegular',
     fontWeight: 'normal',
@@ -50,6 +54,64 @@ const styles = StyleSheet.create({
     zIndex: 100,
     fontSize: 14,
     color: '#515252'
+  },
+
+  fontError: {
+    fontFamily: 'QuestrialRegular',
+    fontWeight: 'normal',
+    position: 'absolute',
+    top: -20,
+    right: 15,
+    zIndex: 100,
+    fontSize: 14,
+    color: '#FF5154'
+  },
+
+  buttonGradient: {
+    height: 50,
+    marginLeft: 15,
+    marginRight: 15,
+    flex: 1,
+    borderRadius: 50,
+    display: 'flex'
+  },
+
+  fontButton: {
+    color: '#FFFFFF',
+    textAlign: 'center',
+    fontFamily: 'QuestrialRegular',
+    fontSize: 18,
+    lineHeight: 50
+  },
+
+  fontBlack: {
+    color: '#515252',
+    textAlign: 'center',
+    fontFamily: 'QuestrialRegular',
+    marginTop: 25,
+    marginBottom: 25,
+    fontSize: 21
+  },
+
+  fontSecondary: {
+    fontFamily: 'QuestrialRegular',
+    letterSpacing: 0.05,
+    fontSize: 20,
+    marginTop: 20,
+    marginRight: 15,
+    textAlign: 'right',
+    color: '#818282'
+  },
+  
+  vertical: {
+    flex: 1,
+    justifyContent: 'center'
+  },
+
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10
   }
 });
 

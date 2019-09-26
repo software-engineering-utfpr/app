@@ -4,9 +4,8 @@ import { View, StyleSheet, SafeAreaView } from 'react-native';
 const styles = StyleSheet.create({
 	containerFull: {
 		minHeight: '100%',
-		flex: 1,
-		backgroundColor: '#FFFFFF',
-	},
+		backgroundColor: '#FFFFFF'
+	}
 });
 
 const Layout = props => {
