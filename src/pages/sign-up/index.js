@@ -6,7 +6,6 @@ import { Root, Popup } from 'popup-ui';
 
 import axios from 'axios';
 
-import { Layout } from '../../components';
 import { login } from '../../database';
 
 import styles from './styles';
@@ -155,7 +154,7 @@ const Signup = props => {
 				</View>
 			</Root>
 		) : (
-			<Layout>
+			<Root>
 				<Image style = {{ position: 'absolute', top: 0 }} source = {require('../../images/upwave.png')} />
 				<TouchableHighlight style = {{ position: 'absolute', top: 17, left: 11 }} underlayColor = "#FFFFFF00" onPress = { () => navigation.goBack() }>
 					<Image source = {require('../../images/fonts/arrow-left-white.png')} />
@@ -203,7 +202,7 @@ const Signup = props => {
 						</LinearGradient>
 					</TouchableHighlight>
 				</ScrollView>
-			</Layout>
+			</Root>
 		)
 	);
 };

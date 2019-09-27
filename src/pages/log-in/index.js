@@ -4,7 +4,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Icon, Input } from 'react-native-elements';
 import { Root, Popup } from 'popup-ui';
 
-import { Layout } from '../../components';
 import { login } from '../../database';
 
 import styles from './styles';
@@ -77,7 +76,7 @@ const Login = props => {
 				</View>
 			</Root>
 		) : (
-			<Layout>
+			<Root>
 				<Image style = {{ position: 'absolute', top: 0 }} source = {require('../../images/upwave.png')} />
 				<TouchableHighlight style = {{ position: 'absolute', top: 17, left: 11 }} underlayColor = "#FFFFFF00" onPress = { () => navigation.goBack() }>
 					<Image source = {require('../../images/fonts/arrow-left-white.png')} />
@@ -119,11 +118,11 @@ const Login = props => {
 						</LinearGradient>
 					{/* </TouchableHighlight> */}
 
-					<TouchableHighlight underlayColor = "#FFFFFF00" onPress = { () => navigation.navigate('Signin') }>
+					<TouchableHighlight underlayColor = "#FFFFFF00" onPress = { () => navigation.navigate('Signup') }>
 						<Text style = { styles.fontSecondary }> Crie sua Conta </Text>
 					</TouchableHighlight>
 				</ScrollView>
-			</Layout>
+			</Root>
 		)
 	);
 };
