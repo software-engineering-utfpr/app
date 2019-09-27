@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, View, TouchableHighlight, Text, Image, ActivityIndicator } from 'react-native';
+import ImagePicker from 'react-native-image-picker';
 import LinearGradient from 'react-native-linear-gradient';
 import { Icon, Input } from 'react-native-elements';
 import { Root, Popup } from 'popup-ui';
@@ -15,8 +16,8 @@ const Profile = props => {
 
 	const [loadingPage, setLoadingPage] = useState(false);
 	const [users, setUsers] = useState([]);
+	const [user, setUser] = useState({});
 	const [profilePhoto, setProfilePhoto] = useState('');
-	const [id, setID] = useState('');
 	const [name, setName] = useState({
 		value: '',
 		error: ''
@@ -42,26 +43,26 @@ const Profile = props => {
 		});
 
 		query('SELECT * FROM user').then(res => {
-				const user = res.rows.item(0);
-				setID(user.id);
-				setName({ ...name, value: user.name });
-				setCPF({ ...cpf, value: user.cpf });
-				setPhone({ ...phone, value: user.phone });
-				setProfilePhoto(user.image);
-				setLoadingPage(false);
-			}).catch(err => {
-				Popup.show({
-					type: 'Danger',
-					title: 'ERRO',
-					timing: 0,
-					textBody: 'Não foi possível obter suas informações.',
-					buttontext: 'Ok',
-					callback: () => {
-						Popup.hide();
-						navigation.goBack();
-					}
-				});
+			const user = res.rows.item(0);
+			setName({ ...name, value: user.name });
+			setCPF({ ...cpf, value: user.cpf });
+			setPhone({ ...phone, value: user.phone });
+			setProfilePhoto(user.image);
+			setUser(user);
+			setLoadingPage(false);
+		}).catch(err => {
+			Popup.show({
+				type: 'Danger',
+				title: 'ERRO',
+				timing: 0,
+				textBody: 'Não foi possível obter suas informações.',
+				buttontext: 'Ok',
+				callback: () => {
+					Popup.hide();
+					navigation.goBack();
+				}
 			});
+		});
 	}, []);
 
 	const handleSubmit = () => {
@@ -94,9 +95,9 @@ const Profile = props => {
 		if(!error) {
 			setLoadingPage(true);
 			axios.put('https://rio-campo-limpo.herokuapp.com/api/users', {
-				id, name: name.value, cpf: cpf.value, phone: phone.value, password: password.value
+				id: user.id, name: name.value, cpf: cpf.value, phone: phone.value, password: password.value
 			}).then(res => {
-				updateUserLocal(id, phone.value, cpf.value, name.value, profilePhoto, () => {
+				updateUserLocal(user.id, phone.value, cpf.value, name.value, profilePhoto, () => {
 					Popup.show({
 						type: 'Success',
 						title: 'Edição Realizada com Sucesso',
@@ -105,7 +106,7 @@ const Profile = props => {
 						buttontext: 'Ok',
 						callback: () => {
 							Popup.hide();
-							navigation.goBack();
+							setLoadingPage(false);
 						}
 					});
 				});
@@ -123,6 +124,68 @@ const Profile = props => {
 				});
 			});
 		}
+	}
+
+	const changePhotoProfile = () => {
+    ImagePicker.launchImageLibrary({}, response => {
+      if(response.uri) {
+				setLoadingPage(true);
+
+				const formData = new FormData();
+    		formData.append('api_key', '584136724691346');
+    		formData.append('timestamp', (Date.now() / 1000));
+				formData.append('upload_preset', 'p9jvf6ai');
+				formData.append('file', { uri: response.uri, type: response.type || 'image/jpeg', name: response.fileName });
+				
+				axios.post('https://api.cloudinary.com/v1_1/dnnkqjrbi/image/upload', formData, {
+					headers: { 'X-Requested-With': 'XMLHttpRequest' }
+				}).then(res => {
+					const image = res.data.secure_url;
+					axios.put('https://rio-campo-limpo.herokuapp.com/api/users', {
+						id: user.id, image
+					}).then(resUser => {
+						setProfilePhoto(image);
+						updateUserLocal(user.id, user.phone, user.cpf, user.name, image, () => {
+							Popup.show({
+								type: 'Success',
+								title: 'Edição Realizada com Sucesso',
+								timing: 0,
+								textBody: 'Foto de Perfil foi atualizada.',
+								buttontext: 'Ok',
+								callback: () => {
+									Popup.hide();
+									setLoadingPage(false);
+								}
+							});
+						});
+					}).catch(err => {
+						Popup.show({
+							type: 'Danger',
+							title: 'Edição não Realizada',
+							timing: 0,
+							textBody: 'Verifique a internet e tente novamente mais tarde.',
+							buttontext: 'Ok',
+							callback: () => {
+								Popup.hide();
+								setLoadingPage(false);
+							}
+						});
+					});
+				}).catch(err => {
+					Popup.show({
+						type: 'Danger',
+						title: 'ERRO',
+						timing: 0,
+						textBody: 'Não foi possível salvar sua nova foto.',
+						buttontext: 'Ok',
+						callback: () => {
+							Popup.hide();
+							setLoadingPage(false);
+						}
+					});
+				});
+      }
+    });
 	}
 
 	const inputHandlerPhone = text => {
@@ -184,7 +247,7 @@ const Profile = props => {
 							<View style = {{ justifyContent: 'center', alignItems: 'center', marginBottom: 30 }}>
 								<Image source = {{ uri: profilePhoto }} style = { styles.image } />
 
-								<TouchableHighlight style = { styles.fontImagePosition } underlayColor = "#FFFFFF00" onPress = { () => console.log('ooooo') }>
+								<TouchableHighlight style = { styles.fontImagePosition } underlayColor = "#FFFFFF00" onPress = { changePhotoProfile }>
 									<Text style = { styles.fontImage }> Editar </Text>
 								</TouchableHighlight>
 							</View>
