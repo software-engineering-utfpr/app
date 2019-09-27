@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, SafeAreaView } from 'react-native';
+import { Root } from 'popup-ui';
 
 const styles = StyleSheet.create({
 	containerFull: {
@@ -12,7 +13,9 @@ const Layout = props => {
 	return (
     <SafeAreaView>
       <View style = { styles.containerFull }>
-        { props.children }
+				<Root>
+					{ props.children }
+				</Root>
       </View>
     </SafeAreaView>
 	);

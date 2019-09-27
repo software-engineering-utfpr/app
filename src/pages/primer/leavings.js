@@ -5,7 +5,7 @@ import { Layout } from '../../components';
 
 import styles from './styles';
 
-const Profile = props => {
+const Leavings = props => {
 	const { navigate } = props.navigation;
 
 	return (
@@ -15,4 +15,4 @@ const Profile = props => {
 	);
 };
 
-export default Profile;
+export default Leavings;

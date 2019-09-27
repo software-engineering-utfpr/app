@@ -1,26 +1,26 @@
 import { createStackNavigator } from 'react-navigation';
 
 import HomeScreen from './home';
-import IdentificacaoScreen from './identificacao';
-import MapaScreen from './mapa';
-import LocalOcorrenciaScreen from './local-ocorrencia';
-import DadosOcorrenciaScreen from './dados-ocorrencia';
+import IdentificationScreen from './identification';
+import MapScreen from './map';
+import OcorrencyPlaceScreen from './ocorrency-place';
+import OcorrencyDataScreen from './ocorrency-data';
 
 const Home = createStackNavigator({
 	Home: {
 		screen: HomeScreen
 	},
-	Identificacao: {
-		screen: IdentificacaoScreen
+	Identification: {
+		screen: IdentificationScreen
 	},
-	Mapa: {
-		screen: MapaScreen
+	Map: {
+		screen: MapScreen
 	},
-	LocalOcorrencia: {
-		screen: LocalOcorrenciaScreen
+	OcorrencyPlace: {
+		screen: OcorrencyPlaceScreen
 	},
-	DadosOcorrencia: {
-		screen: DadosOcorrenciaScreen
+	OcorrencyData: {
+		screen: OcorrencyDataScreen
 	}
 }, {
 	initialRouteName: 'Home',

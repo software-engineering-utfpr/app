@@ -7,9 +7,15 @@ import {
 
 import Splash from './pages/splash';
 import Login from './pages/log-in';
-import Signin from './pages/sign-in';
+import Signup from './pages/sign-up';
 
 import Home from './pages/home';
+import Profile from './pages/profile';
+
+import Calendar from './pages/calendar';
+import Forms from './pages/forms';
+import Games from './pages/games';
+import Primer from './pages/primer';
 
 const authentication = createStackNavigator({
 	Login: {
@@ -18,8 +24,8 @@ const authentication = createStackNavigator({
 			header: null
 		}
 	},
-	Signin: {
-		screen: Signin,
+	Signup: {
+		screen: Signup,
 		navigationOptions: {
 			header: null
 		}
@@ -29,7 +35,7 @@ const authentication = createStackNavigator({
 });
 
 const app = createDrawerNavigator({
-	Home
+	Home, Profile, Calendar, Forms, Games, Primer
 }, {
 	initialRouteName: 'Home'
 });
