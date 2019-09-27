@@ -61,11 +61,9 @@ const login = (phone, password, callback) => {
   });
 };
 
-const updateUserLocal = (
-	phone, cpf, name, image, callback
-) => {
+const updateUserLocal = (id, phone, cpf, name, image, callback) => {
 	DB.transaction(txn => {
-		txn.executeSql('UPDATE user SET name = ?, cpf = ?, phone = ?, image = ? WHERE phone = ?', [name, cpf, phone, image, phone], (_txn, res) => {
+		txn.executeSql('UPDATE user SET name = ?, cpf = ?, phone = ?, image = ? WHERE id = ?', [name, cpf, phone, image, id], (_txn, res) => {
       callback(res);
     });
 	});
