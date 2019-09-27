@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ScrollView, View, TouchableHighlight, Text, Image, ActivityIndicator } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { Icon, Input } from 'react-native-elements';
-import { Root, Popup } from 'popup-ui'
+import { Root, Popup } from 'popup-ui';
 
 import { Layout } from '../../components';
 import { login } from '../../database';
@@ -80,8 +80,8 @@ const Login = props => {
 			<Root>
 				<Layout>
 					<Image style = {{ position: 'absolute', top: 0 }} source = {require('../../images/upwave.png')} />
-					<TouchableHighlight underlayColor = "#FFFFFF00" onPress = { () => navigation.goBack() }>
-						<Image style = {{ position: 'absolute', top: 17, left: 11 }} source = {require('../../images/fonts/arrow-left-white.png')} />
+					<TouchableHighlight style = {{ position: 'absolute', top: 17, left: 11 }} underlayColor = "#FFFFFF00" onPress = { () => navigation.goBack() }>
+						<Image source = {require('../../images/fonts/arrow-left-white.png')} />
 					</TouchableHighlight>
 
 					<ScrollView style = {{ marginTop: 170, marginBottom: 20 }}>
