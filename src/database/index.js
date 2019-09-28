@@ -1,5 +1,6 @@
 import _React from 'react';
 import SQLite from 'react-native-sqlite-storage';
+import { LoginManager, GraphRequest, GraphRequestManager, AccessToken } from 'react-native-fbsdk';
 
 import axios from 'axios';
 
@@ -61,6 +62,45 @@ const login = (phone, password, callback) => {
   });
 };
 
+const facebookLogin = (navigation, callback) => {
+	LoginManager.logInWithPermissions(['email', 'public_profile']).then(result => {
+    if(result.isCanceled) {
+      // Alert.alert('login cancelado!');
+    } else {
+      AccessToken.getCurrentAccessToken().then(data => {
+        console.log('facebooookkk', data);
+
+        const infoRequest = new GraphRequest('/me?fields = email, picture, name', null, (err, user) => {
+          if(err) {
+            console.log('error: ' + err);
+          } else {
+            console.log('success: ');
+            console.log(user);
+            axios.get('https://rio-campo-limpo.herokuapp.com/api/users/').then(res => {
+              console.log('ooooo', res.data);
+            });
+            // verificaEmail(user.email, user.name, null, user.id, callback, () => {
+            //   navigation.navigate('miniCadastro', {
+            //     nome: user.name,
+            //     googleId: null,
+            //     email: user.email,
+            //     facebookId: user.id,
+            //   });
+            // });
+          }
+        });
+
+        new GraphRequestManager().addRequest(infoRequest).start();
+      });
+    }
+  }, error => {
+    console.log('eerrr', error);
+    // Alert.alert('Falha ao efetuar o login');
+  }).catch(err => {
+    console.log(err);
+  });
+};
+
 const updateUserLocal = (id, phone, cpf, name, image, callback) => {
 	DB.transaction(txn => {
 		txn.executeSql('UPDATE user SET name = ?, cpf = ?, phone = ?, image = ? WHERE id = ?', [name, cpf, phone, image, id], (_txn, res) => {
@@ -77,4 +117,4 @@ const logout = callback => {
 
 export default DB;
 
-module.exports = { transaction, query, setDatabase,	dropDatabase, updateUserLocal, login, logout };
+module.exports = { transaction, query, setDatabase,	dropDatabase, updateUserLocal, login, facebookLogin, logout };

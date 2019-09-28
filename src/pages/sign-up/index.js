@@ -149,60 +149,62 @@ const Signup = props => {
 	return (
 		loadingPage ? (
 			<Root>
-				<View style = {[styles.vertical, styles.horizontal]}>
+				<View style = {[styles.vertical, styles.horizontal, { backgroundColor: '#FFFFFF', minHeight: '100%' }]}>
 					<ActivityIndicator size = "large" color = "#00AD45" />
 				</View>
 			</Root>
 		) : (
-			<Root>
-				<Image style = {{ position: 'absolute', top: 0 }} source = {require('../../images/upwave.png')} />
-				<TouchableHighlight style = {{ position: 'absolute', top: 17, left: 11 }} underlayColor = "#FFFFFF00" onPress = { () => navigation.goBack() }>
-					<Image source = {require('../../images/fonts/arrow-left-white.png')} />
-				</TouchableHighlight>
-
-				<ScrollView style = {{ marginTop: 170, marginBottom: 20 }}>
-					<Text style = { styles.title }> Faça o seu cadastro </Text>
-
-					<Input
-						inputStyle = { name.value.length == 0 ? styles.placeholder : styles.input } inputContainerStyle = {{ borderBottomWidth: 0, marginBottom: 5 }}
-						placeholder = "Seu Nome" label = { name.value.length == 0 ? '' : 'Seu Nome' } labelStyle = { styles.label }
-						value = {name.value} onChangeText = { value => setName({ ...name, value, error: '' }) }
-						errorMessage = {name.error} errorStyle = { styles.fontError }
-					/>
-
-					<Input
-						inputStyle = { cpf.value.length == 0 ? styles.placeholder : styles.input } inputContainerStyle = {{ borderBottomWidth: 0, marginBottom: 5 }}
-						placeholder = "Seu CPF" keyboardType = "number-pad"
-						label = { cpf.value.length == 0 ? '' : 'Seu CPF' } labelStyle = { styles.label }
-						value = {cpf.value} onChangeText = { value => setCPF({ ...cpf, value: inputHandlerCPF(value), error: '' }) }
-						errorMessage = {cpf.error} errorStyle = { styles.fontError }
-					/>
-
-					<Input
-						inputStyle = { phone.value.length == 0 ? styles.placeholder : styles.input } inputContainerStyle = {{ borderBottomWidth: 0, marginBottom: 5 }}
-						placeholder = "Seu Telefone" keyboardType = "number-pad" textContentType = "telephoneNumber"
-						label = { phone.value.length == 0 ? '' : 'Seu Telefone' } labelStyle = { styles.label }
-						value = {phone.value} onChangeText = { value => setPhone({ ...phone, value: inputHandlerPhone(value), error: '' }) }
-						errorMessage = {phone.error} errorStyle = { styles.fontError }
-					/>
-
-					<Input
-						inputStyle = { password.value.length == 0 ? styles.placeholder : styles.input } inputContainerStyle = {{ borderBottomWidth: 0, marginBottom: 5 }} secureTextEntry = {!password.visibility} textContentType = "password"
-						placeholder = "Sua Senha" autoCompleteType = "password" autoCapitalize = "none"
-						value = {password.value} onChangeText = { value => setPassword({ ...password, value, error: '' }) }
-						label = { password.value.length == 0 ? '' : 'Sua Senha' } labelStyle = { styles.label }
-						rightIconContainerStyle = {{ position: 'absolute', top: 7, right: 15 }}
-						rightIcon = {<Icon name = { password.visibility ? 'visibility-off' : 'visibility' } onPress = { () => setPassword({ ...password, visibility: !password.visibility }) } color = "#515252" size = {18} />}
-						errorMessage = {password.error} errorStyle = { styles.fontError }
-					/>
-
-					<TouchableHighlight underlayColor = "#FFFFFF00" onPress = { handleSubmit }>
-						<LinearGradient start = {{ x: 0, y: 0 }} end = {{ x: 1, y: 0 }} colors = {["#00AD45", "#5ECC62"]} style = { styles.buttonGradient }>
-							<Text style = { styles.fontButton }> CADASTRAR </Text>
-						</LinearGradient>
+			<View style = {{ backgroundColor: '#FFFFFF', minHeight: '100%' }}>
+				<Root>
+					<Image style = {{ position: 'absolute', top: 0 }} source = {require('../../images/upwave.png')} />
+					<TouchableHighlight style = {{ position: 'absolute', top: 17, left: 11 }} underlayColor = "#FFFFFF00" onPress = { () => navigation.goBack() }>
+						<Image source = {require('../../images/fonts/arrow-left-white.png')} />
 					</TouchableHighlight>
-				</ScrollView>
-			</Root>
+
+					<ScrollView style = {{ marginTop: 170, marginBottom: 20 }}>
+						<Text style = { styles.title }> Faça o seu cadastro </Text>
+
+						<Input
+							inputStyle = { name.value.length == 0 ? styles.placeholder : styles.input } inputContainerStyle = {{ borderBottomWidth: 0, marginBottom: 5 }}
+							placeholder = "Seu Nome" label = { name.value.length == 0 ? '' : 'Seu Nome' } labelStyle = { styles.label }
+							value = {name.value} onChangeText = { value => setName({ ...name, value, error: '' }) }
+							errorMessage = {name.error} errorStyle = { styles.fontError }
+						/>
+
+						<Input
+							inputStyle = { cpf.value.length == 0 ? styles.placeholder : styles.input } inputContainerStyle = {{ borderBottomWidth: 0, marginBottom: 5 }}
+							placeholder = "Seu CPF" keyboardType = "number-pad"
+							label = { cpf.value.length == 0 ? '' : 'Seu CPF' } labelStyle = { styles.label }
+							value = {cpf.value} onChangeText = { value => setCPF({ ...cpf, value: inputHandlerCPF(value), error: '' }) }
+							errorMessage = {cpf.error} errorStyle = { styles.fontError }
+						/>
+
+						<Input
+							inputStyle = { phone.value.length == 0 ? styles.placeholder : styles.input } inputContainerStyle = {{ borderBottomWidth: 0, marginBottom: 5 }}
+							placeholder = "Seu Telefone" keyboardType = "number-pad" textContentType = "telephoneNumber"
+							label = { phone.value.length == 0 ? '' : 'Seu Telefone' } labelStyle = { styles.label }
+							value = {phone.value} onChangeText = { value => setPhone({ ...phone, value: inputHandlerPhone(value), error: '' }) }
+							errorMessage = {phone.error} errorStyle = { styles.fontError }
+						/>
+
+						<Input
+							inputStyle = { password.value.length == 0 ? styles.placeholder : styles.input } inputContainerStyle = {{ borderBottomWidth: 0, marginBottom: 5 }} secureTextEntry = {!password.visibility} textContentType = "password"
+							placeholder = "Sua Senha" autoCompleteType = "password" autoCapitalize = "none"
+							value = {password.value} onChangeText = { value => setPassword({ ...password, value, error: '' }) }
+							label = { password.value.length == 0 ? '' : 'Sua Senha' } labelStyle = { styles.label }
+							rightIconContainerStyle = {{ position: 'absolute', top: 7, right: 15 }}
+							rightIcon = {<Icon name = { password.visibility ? 'visibility-off' : 'visibility' } onPress = { () => setPassword({ ...password, visibility: !password.visibility }) } color = "#515252" size = {18} />}
+							errorMessage = {password.error} errorStyle = { styles.fontError }
+						/>
+
+						<TouchableHighlight underlayColor = "#FFFFFF00" onPress = { handleSubmit }>
+							<LinearGradient start = {{ x: 0, y: 0 }} end = {{ x: 1, y: 0 }} colors = {["#00AD45", "#5ECC62"]} style = { styles.buttonGradient }>
+								<Text style = { styles.fontButton }> CADASTRAR </Text>
+							</LinearGradient>
+						</TouchableHighlight>
+					</ScrollView>
+				</Root>
+			</View>
 		)
 	);
 };
