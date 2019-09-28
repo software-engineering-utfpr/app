@@ -21,7 +21,7 @@ const app = createDrawerNavigator({
 	Home, Profile, Calendar, Forms, Games, Primer,
 	Login, Signup
 }, {
-	initialRouteName: 'Login'
+	initialRouteName: 'Home'
 });
 
 const Router = createAppContainer(
