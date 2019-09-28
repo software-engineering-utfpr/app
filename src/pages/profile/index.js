@@ -292,7 +292,7 @@ const Profile = props => {
 							</LinearGradient>
 						</TouchableHighlight>
 
-						<TouchableHighlight underlayColor = "#FFFFFF00" onPress = { () => logout(() => navigation.navigate('Auth')) }>
+						<TouchableHighlight underlayColor = "#FFFFFF00" onPress = { () => logout(() => navigation.navigate('Home')) }>
 							<LinearGradient start = {{ x: 0, y: 0 }} end = {{ x: 1, y: 0 }} colors = {["#2D2E2E", "#515252"]} style = {[styles.buttonGradient, { marginTop: 20 }]}>
 								<Icon name = "sign-out" type = "font-awesome" color = "#FFFFFF" iconStyle = {{ position: 'absolute', left: 25, top: 12 }} />
 								<Text style = { styles.fontButton }> SAIR </Text>

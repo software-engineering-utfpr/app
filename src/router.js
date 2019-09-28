@@ -17,25 +17,9 @@ import Forms from './pages/forms';
 import Games from './pages/games';
 import Primer from './pages/primer';
 
-const authentication = createStackNavigator({
-	Login: {
-		screen: Login,
-		navigationOptions: {
-			header: null
-		}
-	},
-	Signup: {
-		screen: Signup,
-		navigationOptions: {
-			header: null
-		}
-	}
-}, {
-	initialRouteName: 'Login'
-});
-
 const app = createDrawerNavigator({
-	Home, Profile, Calendar, Forms, Games, Primer
+	Home, Profile, Calendar, Forms, Games, Primer,
+	Login, Signup
 }, {
 	initialRouteName: 'Home'
 });
@@ -43,7 +27,6 @@ const app = createDrawerNavigator({
 const Router = createAppContainer(
 	createSwitchNavigator({
 		Loading: Splash,
-		Auth: authentication,
 		App: app
 	}, {
 		initialRouteName: 'Loading'
