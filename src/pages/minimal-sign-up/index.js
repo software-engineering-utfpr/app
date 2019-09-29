@@ -6,17 +6,17 @@ import { Root, Popup } from 'popup-ui';
 
 import axios from 'axios';
 
-import { login } from '../../database';
+import { login, linkWithFacebook } from '../../database';
 
 import styles from './styles';
 
-const Signup = props => {
+const MinimalSignup = props => {
 	const { navigation } = props;
 
 	const [loadingPage, setLoadingPage] = useState(false);
 	const [users, setUsers] = useState([]);
 	const [name, setName] = useState({
-		value: '',
+		value: navigation.state.params.name,
 		error: ''
 	});
 	const [cpf, setCPF] = useState({
@@ -27,11 +27,8 @@ const Signup = props => {
 		value: '',
 		error: ''
 	});
-	const [password, setPassword] = useState({
-		value: '',
-		visibility: false,
-		error: ''
-	});
+
+	const facebookID = navigation.state.params.facebookId;
 
 	useEffect(() => {
 		axios.get('https://rio-campo-limpo.herokuapp.com/api/users').then(res => {
@@ -44,7 +41,6 @@ const Signup = props => {
 		setName({ ...name, error: '' });
 		setCPF({ ...cpf, error: '' });
 		setPhone({ ...phone, error: '' });
-		setPassword({ ...password, error: '' });
 
 		if(name.value.length == 0) {
 			error = true;
@@ -66,24 +62,19 @@ const Signup = props => {
 			setPhone({ ...phone, error: 'Telefone inválido' });
 		}
 
-		if(password.value.length == 0) {
-			error = true;
-			setPassword({ ...password, error: 'Digite uma senha' });
-		}
-
 		if(!error) {
 			setLoadingPage(true);
 			axios.post('https://rio-campo-limpo.herokuapp.com/api/users', {
-				phone: phone.value, cpf: cpf.value, name: name.value, password: password.value
+				phone: phone.value, cpf: cpf.value, name: name.value, facebookID
 			}).then(res => {
-				login(phone.value, password.value, (err) => {
+				linkWithFacebook(res.data._id, (err) => {
 					if(!err) navigation.navigate('App');
 					else {
 						Popup.show({
 							type: 'Danger',
 							title: 'Cadastro Falhou',
 							timing: 0,
-							textBody: 'Usuário não foi Cadastrado.',
+							textBody: 'Usuário não foi Cadastrado. ' + err,
 							buttontext: 'Ok',
 							callback: () => {
 								Popup.hide();
@@ -158,11 +149,11 @@ const Signup = props => {
 				<Root>
 					<Image style = {{ position: 'absolute', top: 0 }} source = {require('../../images/upwave.png')} />
 					<TouchableHighlight style = {{ position: 'absolute', top: 17, left: 11 }} underlayColor = '#FFFFFF00' onPress = { () => navigation.goBack() }>
-						<Image source = {require('../../images/fonts/arrow-left-white.png')} />
+						<Image source = {require('../../images/fonts/close.png')} />
 					</TouchableHighlight>
 
 					<ScrollView style = {{ marginTop: 170, marginBottom: 20 }}>
-						<Text style = { styles.title }> Faça o seu cadastro </Text>
+						<Text style = { styles.title }> Complete seu cadastro </Text>
 
 						<Input
 							inputStyle = { name.value.length == 0 ? styles.placeholder : styles.input } inputContainerStyle = {{ borderBottomWidth: 0, marginBottom: 5 }}
@@ -187,19 +178,9 @@ const Signup = props => {
 							errorMessage = {phone.error} errorStyle = { styles.fontError }
 						/>
 
-						<Input
-							inputStyle = { password.value.length == 0 ? styles.placeholder : styles.input } inputContainerStyle = {{ borderBottomWidth: 0, marginBottom: 5 }} secureTextEntry = {!password.visibility} textContentType = 'password'
-							placeholder = 'Sua Senha' autoCompleteType = 'password' autoCapitalize = 'none'
-							value = {password.value} onChangeText = { value => setPassword({ ...password, value, error: '' }) }
-							label = { password.value.length == 0 ? '' : 'Sua Senha' } labelStyle = { styles.label }
-							rightIconContainerStyle = {{ position: 'absolute', top: 7, right: 15 }}
-							rightIcon = {<Icon name = { password.visibility ? 'visibility-off' : 'visibility' } onPress = { () => setPassword({ ...password, visibility: !password.visibility }) } color = '#515252' size = {18} />}
-							errorMessage = {password.error} errorStyle = { styles.fontError }
-						/>
-
 						<TouchableHighlight underlayColor = '#FFFFFF00' onPress = { handleSubmit }>
 							<LinearGradient start = {{ x: 0, y: 0 }} end = {{ x: 1, y: 0 }} colors = {['#00AD45', '#5ECC62']} style = { styles.buttonGradient }>
-								<Text style = { styles.fontButton }> CADASTRAR </Text>
+								<Text style = { styles.fontButton }> FINALIZAR </Text>
 							</LinearGradient>
 						</TouchableHighlight>
 					</ScrollView>
@@ -209,4 +190,4 @@ const Signup = props => {
 	);
 };
 
-export default Signup;
+export default MinimalSignup;

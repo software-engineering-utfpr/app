@@ -189,22 +189,22 @@ const Profile = props => {
 	}
 
 	const inputHandlerPhone = text => {
-		text = text.replace(/\D/g, "").substring(0, 11);
-		text = text.replace(/^(\d\d)(\d)/g, "($1) $2");
-		text = text.replace(/(\d{5})(\d)/, "$1-$2");
+		text = text.replace(/\D/g, '').substring(0, 11);
+		text = text.replace(/^(\d\d)(\d)/g, '($1) $2');
+		text = text.replace(/(\d{5})(\d)/, '$1-$2');
 		return text;
 	}
 
 	const inputHandlerCPF = text => {
-		text = text.replace(/\D/g, "").substring(0, 11);
-		text = text.replace(/^(\d{3})(\d)/g, "$1.$2");
-		text = text.replace(/(\d{3})(\d)/, "$1.$2");
-		text = text.replace(/(\d{3})(\d)/, "$1-$2");
+		text = text.replace(/\D/g, '').substring(0, 11);
+		text = text.replace(/^(\d{3})(\d)/g, '$1.$2');
+		text = text.replace(/(\d{3})(\d)/, '$1.$2');
+		text = text.replace(/(\d{3})(\d)/, '$1-$2');
 		return text;
 	}
 
 	const verifyCPF = strCPF => {
-		strCPF = strCPF.replace(/\D/g, "").substring(0, 11);
+		strCPF = strCPF.replace(/\D/g, '').substring(0, 11);
 		let sum = 0, rest;
 
 		if(strCPF === '00000000000') return false;
@@ -230,13 +230,13 @@ const Profile = props => {
 		loadingPage ? (
 			<Root>
 				<View style = {[styles.vertical, styles.horizontal, { backgroundColor: '#FFFFFF', minHeight: '100%' }]}>
-					<ActivityIndicator size = "large" color = "#00AD45" />
+					<ActivityIndicator size = 'large' color = '#00AD45' />
 				</View>
 			</Root>
 		) : (
 			<View style = {{ backgroundColor: '#FFFFFF', minHeight: '100%' }}>
 				<Root>
-					<TouchableHighlight style = {{ position: 'absolute', top: 17, left: 11 }} underlayColor = "#FFFFFF00" onPress = { () => navigation.goBack() }>
+					<TouchableHighlight style = {{ position: 'absolute', top: 17, left: 11 }} underlayColor = '#FFFFFF00' onPress = { () => navigation.goBack() }>
 						<Image source = {require('../../images/fonts/arrow-left-black.png')} />
 					</TouchableHighlight>
 
@@ -247,7 +247,7 @@ const Profile = props => {
 							<View style = {{ justifyContent: 'center', alignItems: 'center', marginBottom: 30 }}>
 								<Image source = {{ uri: profilePhoto }} style = { styles.image } />
 
-								<TouchableHighlight style = { styles.fontImagePosition } underlayColor = "#FFFFFF00" onPress = { changePhotoProfile }>
+								<TouchableHighlight style = { styles.fontImagePosition } underlayColor = '#FFFFFF00' onPress = { changePhotoProfile }>
 									<Text style = { styles.fontImage }> Editar </Text>
 								</TouchableHighlight>
 							</View>
@@ -255,14 +255,14 @@ const Profile = props => {
 
 						<Input
 							inputStyle = { name.value.length == 0 ? styles.placeholder : styles.input } inputContainerStyle = {{ borderBottomWidth: 0, marginBottom: 5 }}
-							placeholder = "Seu Nome" label = { name.value.length == 0 ? '' : 'Seu Nome' } labelStyle = { styles.label }
+							placeholder = 'Seu Nome' label = { name.value.length == 0 ? '' : 'Seu Nome' } labelStyle = { styles.label }
 							value = {name.value} onChangeText = { value => setName({ ...name, value, error: '' }) }
 							errorMessage = {name.error} errorStyle = { styles.fontError }
 						/>
 
 						<Input
 							inputStyle = { cpf.value.length == 0 ? styles.placeholder : styles.input } inputContainerStyle = {{ borderBottomWidth: 0, marginBottom: 5 }}
-							placeholder = "Seu CPF" keyboardType = "number-pad"
+							placeholder = 'Seu CPF' keyboardType = 'number-pad'
 							label = { cpf.value.length == 0 ? '' : 'Seu CPF' } labelStyle = { styles.label }
 							value = {cpf.value} onChangeText = { value => setCPF({ ...cpf, value: inputHandlerCPF(value), error: '' }) }
 							errorMessage = {cpf.error} errorStyle = { styles.fontError }
@@ -270,31 +270,33 @@ const Profile = props => {
 
 						<Input
 							inputStyle = { phone.value.length == 0 ? styles.placeholder : styles.input } inputContainerStyle = {{ borderBottomWidth: 0, marginBottom: 5 }}
-							placeholder = "Seu Telefone" keyboardType = "number-pad" textContentType = "telephoneNumber"
+							placeholder = 'Seu Telefone' keyboardType = 'number-pad' textContentType = 'telephoneNumber'
 							label = { phone.value.length == 0 ? '' : 'Seu Telefone' } labelStyle = { styles.label }
 							value = {phone.value} onChangeText = { value => setPhone({ ...phone, value: inputHandlerPhone(value), error: '' }) }
 							errorMessage = {phone.error} errorStyle = { styles.fontError }
 						/>
 
-						<Input
-							inputStyle = { password.value.length == 0 ? styles.placeholder : styles.input } inputContainerStyle = {{ borderBottomWidth: 0, marginBottom: 5 }} secureTextEntry = {!password.visibility} textContentType = "password"
-							placeholder = "Nova Senha" autoCompleteType = "password" autoCapitalize = "none"
-							value = {password.value} onChangeText = { value => setPassword({ ...password, value, error: '' }) }
-							label = { password.value.length == 0 ? '' : 'Nova Senha' } labelStyle = { styles.label }
-							rightIconContainerStyle = {{ position: 'absolute', top: 7, right: 15 }}
-							rightIcon = {<Icon name = { password.visibility ? 'visibility-off' : 'visibility' } onPress = { () => setPassword({ ...password, visibility: !password.visibility }) } color = "#515252" size = {18} />}
-							errorMessage = {password.error} errorStyle = { styles.fontError }
-						/>
+						{ !user.facebookID ? (
+							<Input
+								inputStyle = { password.value.length == 0 ? styles.placeholder : styles.input } inputContainerStyle = {{ borderBottomWidth: 0, marginBottom: 5 }} secureTextEntry = {!password.visibility} textContentType = 'password'
+								placeholder = 'Nova Senha' autoCompleteType = 'password' autoCapitalize = 'none'
+								value = {password.value} onChangeText = { value => setPassword({ ...password, value, error: '' }) }
+								label = { password.value.length == 0 ? '' : 'Nova Senha' } labelStyle = { styles.label }
+								rightIconContainerStyle = {{ position: 'absolute', top: 7, right: 15 }}
+								rightIcon = {<Icon name = { password.visibility ? 'visibility-off' : 'visibility' } onPress = { () => setPassword({ ...password, visibility: !password.visibility }) } color = '#515252' size = {18} />}
+								errorMessage = {password.error} errorStyle = { styles.fontError }
+							/>
+						) : null }
 
-						<TouchableHighlight underlayColor = "#FFFFFF00" onPress = { handleSubmit }>
-							<LinearGradient start = {{ x: 0, y: 0 }} end = {{ x: 1, y: 0 }} colors = {["#00AD45", "#5ECC62"]} style = { styles.buttonGradient }>
+						<TouchableHighlight underlayColor = '#FFFFFF00' onPress = { handleSubmit }>
+							<LinearGradient start = {{ x: 0, y: 0 }} end = {{ x: 1, y: 0 }} colors = {['#00AD45', '#5ECC62']} style = { styles.buttonGradient }>
 								<Text style = { styles.fontButton }> SALVAR </Text>
 							</LinearGradient>
 						</TouchableHighlight>
 
-						<TouchableHighlight underlayColor = "#FFFFFF00" onPress = { () => logout(() => navigation.navigate('Home')) }>
-							<LinearGradient start = {{ x: 0, y: 0 }} end = {{ x: 1, y: 0 }} colors = {["#2D2E2E", "#515252"]} style = {[styles.buttonGradient, { marginTop: 20 }]}>
-								<Icon name = "sign-out" type = "font-awesome" color = "#FFFFFF" iconStyle = {{ position: 'absolute', left: 25, top: 12 }} />
+						<TouchableHighlight underlayColor = '#FFFFFF00' onPress = { () => logout(() => navigation.navigate('Home')) }>
+							<LinearGradient start = {{ x: 0, y: 0 }} end = {{ x: 1, y: 0 }} colors = {['#2D2E2E', '#515252']} style = {[styles.buttonGradient, { marginTop: 20 }]}>
+								<Icon name = 'sign-out' type = 'font-awesome' color = '#FFFFFF' iconStyle = {{ position: 'absolute', left: 25, top: 12 }} />
 								<Text style = { styles.fontButton }> SAIR </Text>
 							</LinearGradient>
 						</TouchableHighlight>

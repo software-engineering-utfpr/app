@@ -63,14 +63,14 @@ const Login = props => {
 
 	const facebookLoginSubmit = () => {
 		setLoadingPage(true);
-		facebookLogin(navigation, token => {
-			if(token) navigate('App');
+		facebookLogin(navigation, setLoadingPage, (err) => {
+			if(!err) navigation.navigate('App');
 			else {
 				Popup.show({
 					type: 'Danger',
 					title: 'Login Falhou',
 					timing: 0,
-					textBody: 'Falha ao fazer login com Facebook.',
+					textBody: 'Falha ao fazer login com Facebook. ' + err,
 					buttontext: 'Ok',
 					callback: () => {
 						Popup.hide();
@@ -82,9 +82,9 @@ const Login = props => {
 	}
 
 	const inputHandlerPhone = text => {
-		text = text.replace(/\D/g, "").substring(0, 11);
-		text = text.replace(/^(\d\d)(\d)/g, "($1) $2");
-		text = text.replace(/(\d{5})(\d)/, "$1-$2");
+		text = text.replace(/\D/g, '').substring(0, 11);
+		text = text.replace(/^(\d\d)(\d)/g, '($1) $2');
+		text = text.replace(/(\d{5})(\d)/, '$1-$2');
 		return text;
 	}
 
@@ -92,14 +92,14 @@ const Login = props => {
 		loadingPage ? (
 			<Root>
 				<View style = {[styles.vertical, styles.horizontal, { backgroundColor: '#FFFFFF', minHeight: '100%' }]}>
-					<ActivityIndicator size = "large" color = "#00AD45" />
+					<ActivityIndicator size = 'large' color = '#00AD45' />
 				</View>
 			</Root>
 		) : (
 			<View style = {{ backgroundColor: '#FFFFFF', minHeight: '100%' }}>
 				<Root>
 					<Image style = {{ position: 'absolute', top: 0 }} source = {require('../../images/upwave.png')} />
-					<TouchableHighlight style = {{ position: 'absolute', top: 17, left: 11 }} underlayColor = "#FFFFFF00" onPress = { () => navigation.goBack() }>
+					<TouchableHighlight style = {{ position: 'absolute', top: 17, left: 11 }} underlayColor = '#FFFFFF00' onPress = { () => navigation.goBack() }>
 						<Image source = {require('../../images/fonts/arrow-left-white.png')} />
 					</TouchableHighlight>
 
@@ -108,38 +108,38 @@ const Login = props => {
 
 						<Input
 							inputStyle = { phone.value.length == 0 ? styles.placeholder : styles.input } inputContainerStyle = {{ borderBottomWidth: 0, marginBottom: 5 }}
-							placeholder = "Seu Telefone" keyboardType = "number-pad" textContentType = "telephoneNumber"
+							placeholder = 'Seu Telefone' keyboardType = 'number-pad' textContentType = 'telephoneNumber'
 							label = { phone.value.length == 0 ? '' : 'Seu Telefone' } labelStyle = { styles.label }
 							value = {phone.value} onChangeText = { value => setPhone({ ...phone, value: inputHandlerPhone(value), error: '' }) }
 							errorMessage = {phone.error} errorStyle = { styles.fontError }
 						/>
 
 						<Input
-							inputStyle = { password.value.length == 0 ? styles.placeholder : styles.input } inputContainerStyle = {{ borderBottomWidth: 0, marginBottom: 5 }} secureTextEntry = {!password.visibility} textContentType = "password"
-							placeholder = "Sua Senha" autoCompleteType = "password" autoCapitalize = "none"
+							inputStyle = { password.value.length == 0 ? styles.placeholder : styles.input } inputContainerStyle = {{ borderBottomWidth: 0, marginBottom: 5 }} secureTextEntry = {!password.visibility} textContentType = 'password'
+							placeholder = 'Sua Senha' autoCompleteType = 'password' autoCapitalize = 'none'
 							value = {password.value} onChangeText = { value => setPassword({ ...password, value, error: '' }) }
 							label = { password.value.length == 0 ? '' : 'Sua Senha' } labelStyle = { styles.label }
 							rightIconContainerStyle = {{ position: 'absolute', top: 7, right: 15 }}
-							rightIcon = {<Icon name = { password.visibility ? 'visibility-off' : 'visibility' } onPress = { () => setPassword({ ...password, visibility: !password.visibility }) } color = "#515252" size = {18} />}
+							rightIcon = {<Icon name = { password.visibility ? 'visibility-off' : 'visibility' } onPress = { () => setPassword({ ...password, visibility: !password.visibility }) } color = '#515252' size = {18} />}
 							errorMessage = {password.error} errorStyle = { styles.fontError }
 						/>
 
-						<TouchableHighlight underlayColor = "#FFFFFF00" onPress = { handleSubmit }>
-							<LinearGradient start = {{ x: 0, y: 0 }} end = {{ x: 1, y: 0 }} colors = {["#00AD45", "#5ECC62"]} style = { styles.buttonGradient }>
+						<TouchableHighlight underlayColor = '#FFFFFF00' onPress = { handleSubmit }>
+							<LinearGradient start = {{ x: 0, y: 0 }} end = {{ x: 1, y: 0 }} colors = {['#00AD45', '#5ECC62']} style = { styles.buttonGradient }>
 								<Text style = { styles.fontButton }> ENTRAR </Text>
 							</LinearGradient>
 						</TouchableHighlight>
 
 						<Text style = { styles.fontBlack }> ─────   OU   ───── </Text>
 
-						<TouchableHighlight underlayColor = "#FFFFFF00" onPress = { facebookLoginSubmit }>
-							<LinearGradient start = {{ x: 0, y: 0 }} end = {{ x: 1, y: 0 }} colors = {["#2F559E", "#50A1FF"]} style = { styles.buttonGradient }>
-								<Icon name = "facebook" type = "font-awesome" color = "#FFFFFF" iconStyle = {{ position: 'absolute', left: 25, top: 12 }} />
+						<TouchableHighlight underlayColor = '#FFFFFF00' onPress = { facebookLoginSubmit }>
+							<LinearGradient start = {{ x: 0, y: 0 }} end = {{ x: 1, y: 0 }} colors = {['#2F559E', '#50A1FF']} style = { styles.buttonGradient }>
+								<Icon name = 'facebook' type = 'font-awesome' color = '#FFFFFF' iconStyle = {{ position: 'absolute', left: 25, top: 12 }} />
 								<Text style = { styles.fontButton }> ENTRAR COM FACEBOOK </Text>
 							</LinearGradient>
 						</TouchableHighlight>
 
-						<TouchableHighlight underlayColor = "#FFFFFF00" onPress = { () => navigation.navigate('Signup') }>
+						<TouchableHighlight underlayColor = '#FFFFFF00' onPress = { () => navigation.navigate('Signup') }>
 							<Text style = { styles.fontSecondary }> Crie sua Conta </Text>
 						</TouchableHighlight>
 					</ScrollView>

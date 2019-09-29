@@ -13,7 +13,7 @@ const setDatabase = async callback => {
 		await query(tableUser);
 
 		callback();
-	} catch (error) {
+	} catch(error) {
 		console.log('Database Error', error);
 		callback(false);
 	}
@@ -49,7 +49,7 @@ const login = (phone, password, callback) => {
     const token = resUser.data.token;
 
     DB.transaction(txn => {
-      txn.executeSql('INSERT INTO user (id, phone, cpf, name, image, token) VALUES (?, ?, ?, ?, ?, ?)', [
+      txn.executeSql('INSERT INTO user (id, phone, cpf, name, image, token, facebookID) VALUES (?, ?, ?, ?, ?, ?, null)', [
         user._id, user.phone, user.cpf, user.name, user.image, token
       ], (tx, res) => {
         callback();
@@ -62,31 +62,40 @@ const login = (phone, password, callback) => {
   });
 };
 
-const facebookLogin = (navigation, callback) => {
+const facebookLogin = (navigation, setLoadingPage, callback) => {
 	LoginManager.logInWithPermissions(['email', 'public_profile']).then(result => {
-    if(result.isCanceled) {
-      // Alert.alert('login cancelado!');
-    } else {
+    if(result.isCanceled) callback('Operação Cancelada.');
+    else {
       AccessToken.getCurrentAccessToken().then(data => {
-        console.log('facebooookkk', data);
-
-        const infoRequest = new GraphRequest('/me?fields = email, picture, name', null, (err, user) => {
+        const infoRequest = new GraphRequest('/me?fields = id, email, name, phone, picture.type(large)', null, (err, facebookUser) => {
           if(err) {
-            console.log('error: ' + err);
+            callback('Requisão ao Facebook Negada.');
           } else {
-            console.log('success: ');
-            console.log(user);
-            axios.get('https://rio-campo-limpo.herokuapp.com/api/users/').then(res => {
-              console.log('ooooo', res.data);
+            axios.get('https://rio-campo-limpo.herokuapp.com/api/users').then(res => {
+              const user = res.data[res.data.map(e => e.facebookID).indexOf(facebookUser.id)];
+
+              if(user) {
+                axios.post('https://rio-campo-limpo.herokuapp.com/api/users/loginFacebook', { id: user._id }).then(resUser => {
+                  const token = resUser.data.token;
+
+                  DB.transaction(txn => {
+                    txn.executeSql('INSERT INTO user (id, phone, cpf, name, image, token, facebookID) VALUES (?, ?, ?, ?, ?, ?, ?)', [
+                      user._id, user.phone, user.cpf, user.name, user.image, token, facebookUser.id
+                    ], (tx, res) => {
+                      callback();
+                    }, err => {
+                      callback('Não foi possível acessar o Servidor.');
+                    });
+                  });
+                });
+              } else {
+                setLoadingPage(false);
+                navigation.navigate('MinimalSignup', {
+                  name: facebookUser.name,
+                  facebookId: facebookUser.id
+                });
+              }
             });
-            // verificaEmail(user.email, user.name, null, user.id, callback, () => {
-            //   navigation.navigate('miniCadastro', {
-            //     nome: user.name,
-            //     googleId: null,
-            //     email: user.email,
-            //     facebookId: user.id,
-            //   });
-            // });
           }
         });
 
@@ -94,10 +103,28 @@ const facebookLogin = (navigation, callback) => {
       });
     }
   }, error => {
-    console.log('eerrr', error);
-    // Alert.alert('Falha ao efetuar o login');
+    callback('Erros com Permissões do Facebook.');
   }).catch(err => {
-    console.log(err);
+    callback('Erro Desconehcido, tente novamente mais tarde.');
+  });
+};
+
+const linkWithFacebook = (id, callback) => {
+	axios.post('https://rio-campo-limpo.herokuapp.com/api/users/loginFacebook', { id }).then(resUser => {
+    const token = resUser.data.token;
+    const user = resUser.data.user;
+
+    DB.transaction(txn => {
+      txn.executeSql('INSERT INTO user (id, phone, cpf, name, image, token, facebookID) VALUES (?, ?, ?, ?, ?, ?, ?)', [
+        user._id, user.phone, user.cpf, user.name, user.image, token, user.facebookID
+      ], (tx, res) => {
+        callback();
+      }, err => {
+        callback('Não foi possível acessar o Servidor.');
+      });
+    });
+  }).catch(err => {
+    callback('Não foi possível acessar o Servidor.')
   });
 };
 
@@ -111,10 +138,15 @@ const updateUserLocal = (id, phone, cpf, name, image, callback) => {
 
 const logout = callback => {
 	query('DELETE FROM user WHERE phone != 0').then(_res => {
+    facebookLogOut();
     callback();
   }).catch(err => console.log('logout', err));
 };
 
+const facebookLogOut = async () => {
+	await LoginManager.logOut();
+};
+
 export default DB;
 
-module.exports = { transaction, query, setDatabase,	dropDatabase, updateUserLocal, login, facebookLogin, logout };
+module.exports = { transaction, query, setDatabase,	dropDatabase, updateUserLocal, login, facebookLogin, linkWithFacebook, logout };

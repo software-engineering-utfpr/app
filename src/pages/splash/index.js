@@ -6,9 +6,8 @@ import { checkUser } from './stories';
 const Splash = props => {
 	const { navigate } = props.navigation;
 
-	checkUser(() => {
-		setTimeout(() => navigate('App'), 500);
-	});
+	checkUser();
+	setTimeout(() => navigate('Auth'), 500);
 
 	return <View />;
 };
