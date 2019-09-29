@@ -7,7 +7,7 @@ const Splash = props => {
 	const { navigate } = props.navigation;
 
 	checkUser();
-	setTimeout(() => navigate('Auth'), 500);
+	setTimeout(() => navigate('App'), 500);
 
 	return <View />;
 };
