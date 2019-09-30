@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Button } from 'react-native';
 
 import { Layout } from '../../components';
 
@@ -11,6 +11,7 @@ const Home = props => {
 	return (
 		<Layout {...props} screen = "home">
 			<View />
+			<Button onPress = { () => navigate('Profile') } title = "Perfil" />
 		</Layout>
 	);
 };
