@@ -9,7 +9,7 @@ const Games = props => {
 	const { navigate } = props.navigation;
 
 	return (
-		<Layout>
+		<Layout {...props} screen = "games">
 			<View />
 		</Layout>
 	);

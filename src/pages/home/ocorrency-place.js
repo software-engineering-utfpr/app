@@ -9,7 +9,7 @@ const OcorrencyPlace = props => {
 	const { navigate } = props.navigation;
 
 	return (
-		<Layout>
+		<Layout {...props} screen = "home">
 			<View />
 		</Layout>
 	);

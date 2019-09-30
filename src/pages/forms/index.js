@@ -9,7 +9,7 @@ const Forms = props => {
 	const { navigate } = props.navigation;
 
 	return (
-		<Layout>
+		<Layout {...props} screen = "forms">
 			<View />
 		</Layout>
 	);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 
 import { Layout } from '../../components';
 
@@ -9,8 +9,8 @@ const Primer = props => {
 	const { navigate } = props.navigation;
 
 	return (
-		<Layout>
-			<View />
+		<Layout {...props} screen = "primer">
+			<Text>dddddd</Text>
 		</Layout>
 	);
 };

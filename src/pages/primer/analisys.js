@@ -9,7 +9,7 @@ const Analysis = props => {
 	const { navigate } = props.navigation;
 
 	return (
-		<Layout>
+		<Layout {...props} screen = "primer">
 			<View />
 		</Layout>
 	);

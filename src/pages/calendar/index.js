@@ -9,7 +9,7 @@ const Calendar = props => {
 	const { navigate } = props.navigation;
 
 	return (
-		<Layout>
+		<Layout {...props} screen = "calendar">
 			<View />
 		</Layout>
 	);
