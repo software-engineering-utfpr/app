@@ -99,7 +99,7 @@ const Login = props => {
 			<View style = {{ backgroundColor: '#FFFFFF', minHeight: '100%' }}>
 				<Root>
 					<Image style = {{ position: 'absolute', top: 0 }} source = {require('../../images/upwave.png')} />
-					<TouchableHighlight style = {{ position: 'absolute', top: 17, left: 11 }} underlayColor = '#FFFFFF00' onPress = { () => navigation.goBack() }>
+					<TouchableHighlight style = {{ position: 'absolute', top: 17, left: 11 }} underlayColor = '#FFFFFF00' onPress = { () => NavigationPreloadManager.navigate('App') }>
 						<Image source = {require('../../images/fonts/arrow-left-white.png')} />
 					</TouchableHighlight>
 

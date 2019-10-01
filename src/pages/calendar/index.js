@@ -116,8 +116,6 @@ const Calendar = props => {
 						</View>
 					</ScrollView>
 				) }
-
-				<View />
 			</Layout>
 		)
 	);

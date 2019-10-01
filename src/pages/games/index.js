@@ -100,8 +100,6 @@ const Games = props => {
 						</View>
 					</ScrollView>
 				) }
-
-				<View />
 			</Layout>
 		)
 	);
