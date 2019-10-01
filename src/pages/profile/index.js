@@ -240,7 +240,7 @@ const Profile = props => {
 						<Image source = {require('../../images/fonts/arrow-left-black.png')} />
 					</TouchableHighlight>
 
-					<ScrollView style = {{ marginTop: 20, marginBottom: 20 }}>
+					<ScrollView style = {{ marginTop: 50, marginBottom: 20 }}>
 						<Text style = { styles.title }> Seus dados </Text>
 
 						{ profilePhoto ? (

@@ -11,7 +11,8 @@ const Home = props => {
 	return (
 		<Layout {...props} screen = "home">
 			<View />
-			<Button onPress = { () => navigate('Profile') } title = "Perfil" />
+			<Button onPress = { () => navigate('Games') } title = "Perfil" />
+			<Button onPress = { () => navigate('Auth') } title = "Login" />
 		</Layout>
 	);
 };
