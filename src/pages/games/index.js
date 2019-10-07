@@ -67,7 +67,7 @@ const Games = props => {
 			<Layout {...props} screen = "games">
 				<Header
 					containerStyle = {{ backgroundColor: '#FFFFFF', marginTop: -30 }}
-					centerComponent = {{ text: 'JOGOS', style: { color: '#2D2E2E', fontFamily: 'QuestrialRegular', fontSize: 20, textAlignVertical: 'center' } }}
+					centerComponent = {{ text: 'JOGOS', style: { color: '#2D2E2E', fontFamily: 'Raleway-Regular', fontSize: 20, textAlignVertical: 'center' } }}
 					rightComponent = {
 						user ? (
 							<TouchableHighlight underlayColor = '#FFFFFF00' onPress = { () => navigate('Profile') }>
@@ -82,14 +82,14 @@ const Games = props => {
 				/>
 
 				{ games.length === 0 ? (
-					<Text style = {{ fontFamily: 'QuestrialRegular', fontSize: 18, color: '#515252', textAlign: 'center', textAlignVertical: 'center', height: '90%' }}> Não há Jogos </Text>
+					<Text style = {{ fontFamily: 'Raleway-Regular', fontSize: 18, color: '#515252', textAlign: 'center', textAlignVertical: 'center', height: '90%' }}> Não há Jogos </Text>
 				) : (
 					<ScrollView>
 						<View style = {{ paddingTop: 20, paddingBottom: 10 }}>
 							{ games.map((item) => (
 								<View key = { item._id } style = { styles.containerItem }>
 									<Image source = {{ uri: item.image }} style = {{ width: 70, height: 70, borderRadius: 15, marginRight: 10 }} />
-									<Text style = {{ fontFamily: 'QuestrialRegular', color: '#2D2E2E', fontSize: 18, paddingRight: 100, paddingBottom: 50, width: '100%' }}> { item.name } </Text>
+									<Text style = {{ fontFamily: 'Raleway-Regular', color: '#2D2E2E', fontSize: 18, paddingRight: 100, paddingBottom: 50, width: '100%' }}> { item.name } </Text>
 									<TouchableHighlight style = {{ position: 'absolute', width: 23, height: 23, bottom: 10, right: 14 }} underlayColor = '#FFFFFF00' onPress = { () => Linking.openURL(item.link) }>
 										<Image source = {require('../../images/fonts/download.png')}  style = {{ width: 22, height: 22 }} />
 									</TouchableHighlight>

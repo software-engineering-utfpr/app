@@ -47,7 +47,7 @@ const Home = props => {
 			<Layout {...props} screen = "home">
 				<Header
 					containerStyle = {{ backgroundColor: '#FFFFFF', marginTop: -30 }}
-					centerComponent = {{ text: 'OCORÊNCIAS', style: { color: '#2D2E2E', fontFamily: 'QuestrialRegular', fontSize: 20, textAlignVertical: 'center' } }}
+					centerComponent = {{ text: 'OCORÊNCIAS', style: { color: '#2D2E2E', fontFamily: 'Raleway-Regular', fontSize: 20, textAlignVertical: 'center' } }}
 					rightComponent = {
 						user ? (
 							<TouchableHighlight underlayColor = '#FFFFFF00' onPress = { () => navigate('Profile') }>

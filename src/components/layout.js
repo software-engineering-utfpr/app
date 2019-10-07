@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
 	},
 
 	text: {
-		fontFamily: 'QuestrialRegular'
+		fontFamily: 'Raleway-Regular'
 	}
 });
 

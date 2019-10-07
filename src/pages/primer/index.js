@@ -2,7 +2,6 @@ import { createStackNavigator } from 'react-navigation';
 
 import PrimerScreen from './primer';
 import LeavingsScreen from './leavings';
-import AnalysisScreen from './analisys';
 
 const Primer = createStackNavigator({
 	Primer: {
@@ -10,9 +9,6 @@ const Primer = createStackNavigator({
 	},
 	Leavings: {
 		screen: LeavingsScreen
-	},
-	Analysis: {
-		screen: AnalysisScreen
 	}
 }, {
 	initialRouteName: 'Primer',

@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 	},
 
 	fontTabBar: {
-		fontFamily: 'QuestrialRegular',
+		fontFamily: 'Raleway-Regular',
 		fontSize: 22,
 		textAlign: 'center',
 		height: 70,

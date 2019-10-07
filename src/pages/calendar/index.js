@@ -77,7 +77,7 @@ const Calendar = props => {
 			<Layout {...props} screen = "calendar">
 				<Header
 					containerStyle = {{ backgroundColor: '#FFFFFF', marginTop: -30 }}
-					centerComponent = {{ text: 'EVENTOS', style: { color: '#2D2E2E', fontFamily: 'QuestrialRegular', fontSize: 20, textAlignVertical: 'center' } }}
+					centerComponent = {{ text: 'EVENTOS', style: { color: '#2D2E2E', fontFamily: 'Raleway-Regular', fontSize: 20, textAlignVertical: 'center' } }}
 					rightComponent = {
 						user ? (
 							<TouchableHighlight underlayColor = '#FFFFFF00' onPress = { () => navigate('Profile') }>
@@ -100,7 +100,7 @@ const Calendar = props => {
 				/>
 
 				{ eventsFiltered.length === 0 ? (
-					<Text style = {{ fontFamily: 'QuestrialRegular', fontSize: 18, color: '#515252', textAlign: 'center', textAlignVertical: 'center', height: '90%' }}> Não há Eventos </Text>
+					<Text style = {{ fontFamily: 'Raleway-Regular', fontSize: 18, color: '#515252', textAlign: 'center', textAlignVertical: 'center', height: '90%' }}> Não há Eventos </Text>
 				) : (
 					<ScrollView>
 						<View style = {{ paddingTop: 20, paddingBottom: 10 }}>
@@ -108,8 +108,8 @@ const Calendar = props => {
 								<View key = { item._id } style = { styles.containerItem }>
 									<View style = {{ width: 20, height: 20, borderRadius: 50, marginRight: 10, backgroundColor: item.color }} />
 									<View style = {{ paddingRight: 30, paddingBottom: 50, width: '100%' }}>
-										<Text style = {{ fontFamily: 'QuestrialRegular', fontSize: 18, color: '#2D2E2E' }}> { item.name } </Text>
-										<Text style = {{ fontFamily: 'QuestrialRegular', fontSize: 14 }}> { (moment(item.finalDate).diff(moment(item.initialDate), 'days')) === 0 ? item.allDay ? moment(item.initialDate).format('dddd, D MMMM') : `${moment(item.initialDate).format('dddd, D MMMM')} ⠂${moment(item.initialDate).format('HH:mm')} - ${moment(item.finalDate).format('HH:mm')}` : item.allDay ? `${moment(item.initialDate).format('D')} - ${moment(item.finalDate).format('D')} de ${moment(item.finalDate).format('MMMM')} de ${moment(item.finalDate).format('YYYY')}` : `${moment(item.initialDate).format('D MMMM YYYY, HH:mm')} - ${moment(item.finalDate).format('D MMMM YYYY, HH:mm')}` } </Text>
+										<Text style = {{ fontFamily: 'Raleway-Regular', fontSize: 18, color: '#2D2E2E' }}> { item.name } </Text>
+										<Text style = {{ fontFamily: 'Raleway-Regular', fontSize: 14 }}> { (moment(item.finalDate).diff(moment(item.initialDate), 'days')) === 0 ? item.allDay ? moment(item.initialDate).format('dddd, D MMMM') : `${moment(item.initialDate).format('dddd, D MMMM')} ⠂${moment(item.initialDate).format('HH:mm')} - ${moment(item.finalDate).format('HH:mm')}` : item.allDay ? `${moment(item.initialDate).format('D')} - ${moment(item.finalDate).format('D')} de ${moment(item.finalDate).format('MMMM')} de ${moment(item.finalDate).format('YYYY')}` : `${moment(item.initialDate).format('D MMMM YYYY, HH:mm')} - ${moment(item.finalDate).format('D MMMM YYYY, HH:mm')}` } </Text>
 									</View>
 								</View>
 							)) }

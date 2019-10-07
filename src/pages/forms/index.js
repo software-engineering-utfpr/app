@@ -47,7 +47,7 @@ const Forms = props => {
 			<Layout {...props} screen = "forms">
 				<Header
 					containerStyle = {{ backgroundColor: '#FFFFFF', marginTop: -30 }}
-					centerComponent = {{ text: 'FORMULÁRIOS', style: { color: '#2D2E2E', fontFamily: 'QuestrialRegular', fontSize: 20, textAlignVertical: 'center' } }}
+					centerComponent = {{ text: 'FORMULÁRIOS', style: { color: '#2D2E2E', fontFamily: 'Raleway-Regular', fontSize: 20, textAlignVertical: 'center' } }}
 					rightComponent = {
 						user ? (
 							<TouchableHighlight underlayColor = '#FFFFFF00' onPress = { () => navigate('Profile') }>

@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   title: {
-    fontFamily: 'QuestrialRegular',
+    fontFamily: 'Raleway-Regular',
     marginLeft: 21,
     fontSize: 30,
     lineHeight: 31,
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   },
 
   placeholder: {
-    fontFamily: 'QuestrialRegular',
+    fontFamily: 'Raleway-Regular',
     height: 57,
     borderBottomWidth: 0,
     fontSize: 16,
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    fontFamily: 'QuestrialRegular',
+    fontFamily: 'Raleway-Regular',
     height: 57,
     borderBottomWidth: 0,
     fontSize: 19,
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   },
 
   label: {
-    fontFamily: 'QuestrialRegular',
+    fontFamily: 'Raleway-Regular',
     fontWeight: 'normal',
     position: 'absolute',
     top: 7,
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   },
 
   fontError: {
-    fontFamily: 'QuestrialRegular',
+    fontFamily: 'Raleway-Regular',
     fontWeight: 'normal',
     position: 'absolute',
     top: -20,
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   fontButton: {
     color: '#FFFFFF',
     textAlign: 'center',
-    fontFamily: 'QuestrialRegular',
+    fontFamily: 'Raleway-Regular',
     fontSize: 18,
     lineHeight: 50
   },
