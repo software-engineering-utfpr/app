@@ -16,7 +16,19 @@ const styles = StyleSheet.create({
 		borderWidth: 2,
 		padding: 1,
     borderColor: '#2D2E2E'
-	},
+  },
+  
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    height: 400,
+    width: 400,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  map: {
+    flex: 1,
+    ...StyleSheet.absoluteFillObject,
+  },
   
   vertical: {
     flex: 1,
