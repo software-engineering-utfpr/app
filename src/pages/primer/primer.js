@@ -86,7 +86,7 @@ const Primer = props => {
 					<ScrollView>
 						<Text style = { styles.title }>Cartilha</Text>
 						<Text style = { styles.subtitle }>
-							Veja os principais locais de descate de diferentes tipos de resíduos.
+							Veja os principais locais de descarte de diferentes tipos de resíduos.
 						</Text>
 
 						<Text style = { styles.listTitle }> Resíduos </Text>
