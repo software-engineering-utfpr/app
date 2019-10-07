@@ -56,7 +56,37 @@ const styles = StyleSheet.create({
 		padding: 15,
 		borderRadius: 15,
 		backgroundColor: '#FAFCFE'
-	},
+  },
+  
+  leavingTitle: {
+    fontFamily: 'Raleway-Bold',
+    fontSize: 30,
+    color: '#2D2E2E',
+    letterSpacing: 0.05,
+    marginTop: 20,
+    marginBottom: 18,
+    marginLeft: 16,
+    marginRight: 16
+  },
+
+  leavingSubtitle: {
+    fontFamily: 'Raleway-Regular',
+    fontSize: 18,
+    color: '#515252',
+    marginLeft: 16,
+    marginRight: 16
+  },
+
+  mapTitle: {
+    fontFamily: 'Raleway-Bold',
+    fontSize: 23,
+    color: '#2D2E2E',
+    letterSpacing: 0.05,
+    marginTop: 60,
+    marginBottom: 10,
+    marginLeft: 16,
+    marginRight: 16
+  },
   
   vertical: {
     flex: 1,

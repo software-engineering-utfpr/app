@@ -16,8 +16,6 @@ const Primer = props => {
 	const [user, setUser] = useState({});
 	const [loadingScreen, setLoadingScreen] = useState(false);
 	const [leavings, setLeavings] = useState([]);
-	const [leavingsFiltered, setLeavingsFiltered] = useState([]);
-	const [searchText, setSearchText] = useState('');
 
 	useEffect(() => {
 		setLoadingScreen(true);
@@ -25,7 +23,6 @@ const Primer = props => {
 		axios.get('https://rio-campo-limpo.herokuapp.com/api/leavings').then((res) => {
       setLoadingScreen(false);
 			setLeavings(res.data);
-			setLeavingsFiltered(res.data);
     }).catch((err) => {
       setLoadingScreen(false);
 			Popup.show({
@@ -101,7 +98,7 @@ const Primer = props => {
 										<Text style = {{ fontFamily: 'Raleway-Bold', color: '#2D2E2E', fontSize: 18, paddingRight: 100, width: '100%' }}> { item.name } </Text>
 										<Text style = {{ fontFamily: 'Raleway-Regular', color: '#515252', fontSize: 16, paddingTop: 5, letterSpacing: 0.05, paddingRight: 10, width: '100%' }} numberOfLines = {1}> { item.description } </Text>
 
-										<TouchableHighlight style = {{ position: 'absolute', width: 24, height: 24, right: -5, top: 10, alignItems: 'center' }} underlayColor = '#FFFFFF00' onPress = { () => Linking.openURL('https://google.com') }>
+										<TouchableHighlight style = {{ position: 'absolute', width: 24, height: 24, right: -5, top: 10, alignItems: 'center' }} underlayColor = '#FFFFFF00' onPress = { () => navigate('Leavings', { id: item._id }) }>
 											<Image source = {require('../../images/fonts/chevron-right.png')}  style = {{ width: 24, height: 24 }} />
 										</TouchableHighlight>
 									</View>
