@@ -16,7 +16,6 @@
   />
 
   <item
-    android:bottom="50dp"
     android:drawable="@drawable/downwave"
     android:height="185dp"
     android:gravity="bottom"
