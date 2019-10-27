@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, SafeAreaView } from 'react-native';
 import { TabBar } from '@ant-design/react-native';
 import { Root } from 'popup-ui';
+
+import axios from 'axios';
+import moment from 'moment';
+
+import { query } from '../database';
 
 const styles = StyleSheet.create({
 	containerFull: {
@@ -20,6 +25,28 @@ const Layout = props => {
 
 	const [pageHeight, setHeight] = useState(0);
 	const [heightStatus, setHeightStatus] = useState(false);
+	const [user, setUser] = useState({});
+	const [forms, setForms] = useState([]);
+
+	useEffect(() => {
+    axios.get('https://rio-campo-limpo.herokuapp.com/api/forms').then((res) => {
+			setForms(res.data);
+    });
+
+		query('SELECT * FROM user').then(res => {
+			const user = res.rows.item(0);
+
+			if(user) {
+				axios.get(`https://rio-campo-limpo.herokuapp.com/api/users/${user.id}`).then((res) => {
+					setUser(res.data);
+				}).catch((err) => {
+					setUser(user);
+				});
+			} else {
+				setUser(user);
+			}
+		});
+	}, []);
 
 	return (
     <SafeAreaView>
@@ -50,7 +77,7 @@ const Layout = props => {
 					<TabBar.Item
 						title = {<Text style = { styles.text }> Formulários </Text>} icon = {<Image style = {{ width: 20, height: 20 }} source = {require('../images/fonts/forms-black.png')} />}
 						selected = { props.screen === 'forms' } selectedIcon = {<Image style = {{ width: 20, height: 20 }} source = {require('../images/fonts/forms-tint.png')} />}
-						onPress = { () => navigate('Forms') }
+						onPress = { () => navigate('Forms') } badge = { user.forms && forms.filter(r => moment().isBefore(moment(r.expireDate)) && !user.forms.map(e => e.form).includes(r._id)).length > 0 }
 					/>
 
 					<TabBar.Item
