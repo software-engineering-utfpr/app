@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image, TouchableHighlight, ActivityIndicator } from 'react-native';
+import { ScrollView, View, Image, Text, TouchableHighlight, ActivityIndicator } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import { Header } from 'react-native-elements';
 import { Popup, Root } from 'popup-ui';
+
+import axios from 'axios';
 
 import { Layout } from '../../components';
 import { query } from '../../database';
@@ -12,15 +15,34 @@ const Home = props => {
 	const { navigate } = props.navigation;
 
 	const [user, setUser] = useState({});
+	const [occurrences, setOccurences] = useState([]);
 	const [loadingScreen, setLoadingScreen] = useState(false);
 
 	useEffect(() => {
 		setLoadingScreen(true);
-
-		setLoadingScreen(false);
-
 		query('SELECT * FROM user').then(res => {
 			const user = res.rows.item(0);
+
+			if(user) {
+				axios.get(`https://rio-campo-limpo.herokuapp.com/api/occurrences/user/${user.id}`).then((res) => {
+					setLoadingScreen(false);
+					setOccurences(res.data || []);
+				}).catch((err) => {
+					Popup.show({
+						type: 'Danger',
+						title: 'ERRO',
+						timing: 0,
+						textBody: 'Não foi possível obter as suas ocorrências.',
+						buttontext: 'Ok',
+						callback: () => {
+							Popup.hide();
+							setLoadingScreen(false);
+						}
+					});
+				});
+			}
+
+			setLoadingScreen(false);
 			setUser(user);
 		}).catch(err => {
 			Popup.show({
@@ -31,10 +53,29 @@ const Home = props => {
 				buttontext: 'Ok',
 				callback: () => {
 					Popup.hide();
+					setLoadingScreen(false);
 				}
 			});
 		});
 	}, []);
+
+	const openMap = () => {
+		if(!user) {
+			Popup.show({
+				type: 'Warning',
+				title: 'ATENÇÃO',
+				timing: 0,
+				textBody: 'Você não está logado no sistema. Sua nova ocorrência será feita de forma anônima.',
+				buttontext: 'Continuar',
+				callback: () => {
+					Popup.hide();
+					navigate('Map');
+				}
+			});
+		} else {
+			navigate('Map');
+		}
+	};
 
 	return (
 		loadingScreen ? (
@@ -60,6 +101,31 @@ const Home = props => {
 						)
 					}
 				/>
+
+				{ occurrences.length === 0 ? (
+					<ScrollView>
+						<Text style = { styles.title }>Bem-vindo</Text>
+						<Text style = { styles.subtitle }>
+							Ocorrências anônimas registradas não serão apresentadas no aplicativo. Para poder consultar e acompanhar a denúncia, cadastre-se.
+						</Text>
+
+						<Text style = {[styles.subtitle, { fontFamily: 'Raleway-SemiBold' }]}>
+							Clique em + para registrar uma ocorrência.
+						</Text>
+					</ScrollView>
+				) : (
+					<ScrollView>
+						<View style = {{ paddingTop: 20, paddingBottom: 10 }}>
+							{ occurrences.map((item) => (<Text>jjjj</Text>)) }
+						</View>
+					</ScrollView>
+				) }
+
+				<TouchableHighlight underlayColor = '#FFFFFF00' onPress = { () => openMap() } style = { styles.plusButtonContainer }>
+					<LinearGradient start = {{ x: 0, y: 0 }} end = {{ x: 1, y: 0 }} colors = {['#00AD45', '#5ECC62']} style = { styles.plusButton }>
+						<Text style = { styles.fontButton }> + </Text>
+					</LinearGradient>
+				</TouchableHighlight>
 			</Layout>
 		)
 	);

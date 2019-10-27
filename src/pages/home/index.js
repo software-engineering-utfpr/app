@@ -1,7 +1,6 @@
 import { createStackNavigator } from 'react-navigation';
 
 import HomeScreen from './home';
-import IdentificationScreen from './identification';
 import MapScreen from './map';
 import OcorrencyPlaceScreen from './ocorrency-place';
 import OcorrencyDataScreen from './ocorrency-data';
@@ -9,9 +8,6 @@ import OcorrencyDataScreen from './ocorrency-data';
 const Home = createStackNavigator({
 	Home: {
 		screen: HomeScreen
-	},
-	Identification: {
-		screen: IdentificationScreen
 	},
 	Map: {
 		screen: MapScreen

@@ -17,17 +17,47 @@ const styles = StyleSheet.create({
 		padding: 1,
     borderColor: '#2D2E2E'
   },
-  
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    height: 400,
-    width: 400,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+
+  title: {
+    fontFamily: 'Raleway-SemiBold',
+    fontSize: 30,
+    color: '#2F80ED',
+    letterSpacing: 0.05,
+    marginTop: 30,
+    marginBottom: 10,
+    marginLeft: 16,
+    marginRight: 16
   },
-  map: {
-    flex: 1,
-    ...StyleSheet.absoluteFillObject,
+
+  subtitle: {
+    fontFamily: 'Raleway-Regular',
+    fontSize: 18,
+    color: '#515252',
+    marginTop: 20,
+    marginLeft: 16,
+    marginBottom: 0,
+    marginRight: 16
+  },
+
+  plusButtonContainer: {
+    position: 'absolute',
+    bottom: 15,
+    right: 15,
+    height: 50,
+    width: 50,
+    borderRadius: 100
+  },
+
+  plusButton: {
+    borderRadius: 100
+  },
+
+  fontButton: {
+    color: '#FFFFFF',
+    textAlign: 'center',
+    fontFamily: 'Raleway-SemiBold',
+    fontSize: 35,
+    lineHeight: 50
   },
   
   vertical: {

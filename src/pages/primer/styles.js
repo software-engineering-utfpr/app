@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 		padding: 1,
     borderColor: '#2D2E2E'
   },
-  
+
   title: {
     fontFamily: 'Raleway-SemiBold',
     fontSize: 30,
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     marginLeft: 16,
     marginRight: 16
   },
-  
+
   subtitle: {
     fontFamily: 'Raleway-Regular',
     fontSize: 22,
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     marginLeft: 16,
     marginRight: 16
   },
-	
+
 	containerItem: {
 		display: 'flex',
 		flexDirection: 'row',
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
 		borderRadius: 15,
 		backgroundColor: '#FAFCFE'
   },
-  
+
   leavingTitle: {
     fontFamily: 'Raleway-Bold',
     fontSize: 30,
