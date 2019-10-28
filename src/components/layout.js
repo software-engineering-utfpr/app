@@ -77,7 +77,7 @@ const Layout = props => {
 					<TabBar.Item
 						title = {<Text style = { styles.text }> Formulários </Text>} icon = {<Image style = {{ width: 20, height: 20 }} source = {require('../images/fonts/forms-black.png')} />}
 						selected = { props.screen === 'forms' } selectedIcon = {<Image style = {{ width: 20, height: 20 }} source = {require('../images/fonts/forms-tint.png')} />}
-						onPress = { () => navigate('Forms') } badge = { user && forms.filter(r => moment().isBefore(moment(r.expireDate)) && !user.forms.map(e => e.form).includes(r._id)).length > 0 }
+						onPress = { () => navigate('Forms') } badge = { user && user.forms && forms.filter(r => moment().isBefore(moment(r.expireDate)) && !user.forms.map(e => e.form).includes(r._id)).length > 0 }
 					/>
 
 					<TabBar.Item

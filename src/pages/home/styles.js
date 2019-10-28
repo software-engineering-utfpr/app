@@ -59,6 +59,21 @@ const styles = StyleSheet.create({
     fontSize: 35,
     lineHeight: 50
   },
+
+  buttonGradientAbsolute: {
+    height: 50,
+    flex: 1,
+    borderRadius: 15,
+    display: 'flex'
+  },
+
+  fontButtonGradient: {
+    color: '#FFFFFF',
+    textAlign: 'center',
+    fontFamily: 'Raleway-SemiBold',
+    fontSize: 18,
+    lineHeight: 50
+  },
   
   vertical: {
     flex: 1,
