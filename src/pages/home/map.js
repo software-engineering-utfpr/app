@@ -22,7 +22,6 @@ const Map = props => {
 		latitudeDelta: 0.005,
 		longitudeDelta: 0.0121
 	});
-	const [visibleMap, setVisibleMap] = useState(true);
 	const [loadingScreen, setLoadingScreen] = useState(false);
 
 	useEffect(() => {
@@ -48,8 +47,6 @@ const Map = props => {
 		});
 	}, []);
 
-	console.log('ooooo');
-
 	const confirmMap = () => {
 		setLoadingScreen(true);
 
@@ -72,7 +69,6 @@ const Map = props => {
 				});
 			} else {
 				setLoadingScreen(false);
-				setVisibleMap(false);
 				navigation.navigate('OcorrencyPlace', { region });
 			}
 		}).catch(error => {
@@ -103,26 +99,19 @@ const Map = props => {
 					<Image source = {require('../../images/fonts/arrow-left-black.png')} />
 				</TouchableHighlight>
 
-				{ visibleMap ? (
-					<MapView
-						style = {{ flex: 1, height: Dimensions.get('window').height }}
-						onRegionChange = { (region) => setRegion(region) }
-						initialRegion = {{
-							latitude: region.latitude || -24.044106,
-							longitude: region.longitude || -52.378633,
-							latitudeDelta: 0.005,
-							longitudeDelta: 0.0121
-						}}
-						regions = {region}
-					>
-						<Marker
-							coordinate = {{
-								latitude: region.latitude,
-								longitude: region.longitude
-							}}
-						/>
-					</MapView>
-				) : (<View />) }
+				<Image source = {require('../../images/fonts/pin-maps.png')} style = {{ height: 36, width: 20.3773585, position: 'absolute', left: (Dimensions.get('window').width/2) - 10, bottom: (Dimensions.get('window').height/2) - 25, zIndex: 99999 }} />
+
+				<MapView
+					style = {{ flex: 1, height: Dimensions.get('window').height || 400, width: Dimensions.get('window').width || 200 }}
+					onRegionChange = { (region) => setRegion(region) }
+					initialRegion = {{
+						latitude: region.latitude || -24.044106,
+						longitude: region.longitude || -52.378633,
+						latitudeDelta: 0.005,
+						longitudeDelta: 0.0121
+					}}
+					regions = {region}
+				/>
 
 				<TouchableHighlight underlayColor = '#FFFFFF00' onPress = { confirmMap } style = {{ position: 'absolute', bottom: 20, width: Dimensions.get('window').width - 30, left: 15 }}>
 					<LinearGradient start = {{ x: 0, y: 0 }} end = {{ x: 1, y: 0 }} colors = {['#00AD45', '#5ECC62']} style = { styles.buttonGradientAbsolute }>
