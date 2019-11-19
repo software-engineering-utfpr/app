@@ -137,7 +137,7 @@ const Forms = props => {
 					<ScrollView>
 						<View style = {{ paddingTop: 20, paddingBottom: 10 }}>
 							{ forms.map((item) => (
-								user.forms && user.forms.map(e => e.form).includes(item._id) ? (
+								user && user.forms && user.forms.map(e => e.form).includes(item._id) ? (
 									<View key = { item._id } style = { styles.containerItem }>
 										<View style = {{ width: 20, height: 20, borderRadius: 50, marginRight: 10, backgroundColor: '#00AD45' }} />
 										<View style = {{ paddingRight: 30, paddingBottom: 50, width: '100%' }}>

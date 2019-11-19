@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, View, Text, TouchableHighlight, Image, ActivityIndicator, Dimensions } from 'react-native';
+import { View, Text, TouchableHighlight, Image, ActivityIndicator, Dimensions } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { Popup, Root } from 'popup-ui';
 
-import MapView, { Marker } from 'react-native-maps';
+import MapView from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import Geocoder from 'react-native-geocoding';
 
@@ -34,9 +34,11 @@ const Map = props => {
 				const state = json.results[0].address_components[4].short_name;
 
 				if(city === "Campo Mourão" && state === "PR") {
-					setRegion({
+					setRegion({...region,
 						latitude: position.coords.latitude,
-						longitude: position.coords.longitude
+						longitude: position.coords.longitude,
+						latitudeDelta: 0.005,
+						longitudeDelta: 0.0121
 					});
 				}
 
@@ -52,10 +54,10 @@ const Map = props => {
 
 		Geocoder.init(GOOGLE_MAPS_APIKEY);
 		Geocoder.from(region.latitude, region.longitude).then(json => {
-			const city = json.results[0].address_components[3].long_name;
-			const state = json.results[0].address_components[4].short_name;
+			const state = json.results[0].address_components.filter(e => e.types.includes('administrative_area_level_1'))[0].long_name;
+			const city = json.results[0].address_components.filter(e => e.types.includes('administrative_area_level_2'))[0].short_name;
 
-			if(city !== "Campo Mourão" || state !== "PR") {
+			if(city !== "Campo Mourão" || (state !== "PR" && state !== "Paraná")) {
 				Popup.show({
 					type: 'Danger',
 					title: 'ERRO',
@@ -69,7 +71,7 @@ const Map = props => {
 				});
 			} else {
 				setLoadingScreen(false);
-				navigation.navigate('OcorrencyPlace', { region });
+				navigation.navigate('OcorrencyData', { region });
 			}
 		}).catch(error => {
 			Popup.show({
@@ -107,8 +109,8 @@ const Map = props => {
 					initialRegion = {{
 						latitude: region.latitude || -24.044106,
 						longitude: region.longitude || -52.378633,
-						latitudeDelta: 0.005,
-						longitudeDelta: 0.0121
+						latitudeDelta: region.latitudeDelta || 0.005,
+						longitudeDelta: region.longitudeDelta || 0.0121
 					}}
 					regions = {region}
 				/>

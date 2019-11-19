@@ -49,7 +49,7 @@ const Layout = props => {
 	}, []);
 
 	return (
-    <SafeAreaView>
+    <View style = {{ backgroundColor: '#FFFFFF', minHeight: '100%' }}>
       <View style = { styles.containerFull } onLayout = { (event) => { if(!heightStatus) { setHeight(event.nativeEvent.layout.height); setHeightStatus(true); } } }>
 				<Root style = {{ height: pageHeight - 50 }}>
 					{ props.children }
@@ -74,11 +74,13 @@ const Layout = props => {
 						onPress = { () => navigate('Home') }
 					/>
 
-					<TabBar.Item
-						title = {<Text style = { styles.text }> Formulários </Text>} icon = {<Image style = {{ width: 20, height: 20 }} source = {require('../images/fonts/forms-black.png')} />}
-						selected = { props.screen === 'forms' } selectedIcon = {<Image style = {{ width: 20, height: 20 }} source = {require('../images/fonts/forms-tint.png')} />}
-						onPress = { () => navigate('Forms') } badge = { user && user.forms && forms.filter(r => moment().isBefore(moment(r.expireDate)) && !user.forms.map(e => e.form).includes(r._id)).length > 0 }
-					/>
+					{ user ? (
+						<TabBar.Item
+							title = {<Text style = { styles.text }> Formulários </Text>} icon = {<Image style = {{ width: 20, height: 20 }} source = {require('../images/fonts/forms-black.png')} />}
+							selected = { props.screen === 'forms' } selectedIcon = {<Image style = {{ width: 20, height: 20 }} source = {require('../images/fonts/forms-tint.png')} />}
+							onPress = { () => navigate('Forms') } badge = { user && user.forms && forms.filter(r => moment().isBefore(moment(r.expireDate)) && !user.forms.map(e => e.form).includes(r._id)).length > 0 }
+						/>
+					) : <View /> }
 
 					<TabBar.Item
 						title = {<Text style = { styles.text }> Jogos </Text>} icon = {<Image style = {{ width: 20, height: 20 }} source = {require('../images/fonts/games-black.png')} />}
@@ -87,7 +89,7 @@ const Layout = props => {
 					/>
 				</TabBar>
       </View>
-    </SafeAreaView>
+    </View>
 	);
 };
 
