@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, TouchableHighlight, Image, ActivityIndicator, Picker } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import LinearGradient from 'react-native-linear-gradient';
+import Video from 'react-native-video';
 import MediaMeta from 'react-native-media-meta';
 import { Root, Popup } from 'popup-ui';
 import { Header, Input } from 'react-native-elements';
@@ -38,14 +39,8 @@ const OcorrencyData = props => {
 		array: [],
 		visible: true
 	});
-	const [video, setVideo] = useState({
-		media: {},
-		visible: true
-	});
-	const [audio, setAudio] = useState({
-		media: {},
-		visible: true
-	});
+	const [video, setVideo] = useState('');
+	const [audio, setAudio] = useState({});
 
 	const [description, setDescription] = useState({
 		value: '',
@@ -243,12 +238,12 @@ const OcorrencyData = props => {
 							<TouchableHighlight
 								underlayColor = '#FFFFFF00'
 								onPress = { () => {
-									if(video.media !== {}) {
+									if(!video) {
 										ImagePicker.launchImageLibrary({ mediaType: 'video' }, response => {
 											if(response.uri) {
 												MediaMeta.get(response.path).then((metadata) => {
 													if(metadata.duration <= 30000) {
-														setVideo({...video, media: response });
+														setVideo(response);
 													}
 												}).catch(err => console.error(err));
 											}
@@ -268,7 +263,7 @@ const OcorrencyData = props => {
 									if(video.media !== {}) {
 										ImagePicker.launchImageLibrary({ mediaType: 'video' }, response => {
 											if(response.uri) {
-												setVideo({...video, media: response });
+												setAudio(response);
 											}
 										});
 									}
@@ -291,6 +286,16 @@ const OcorrencyData = props => {
 									</TouchableHighlight>
 								</View>
 							)) }
+
+							{ video ? (
+								<View key = {video.uri} style = {{ width: 80, height: 80, marginHorizontal: 10, marginVertical: 15 }}>
+									<Video source = {{ uri: video.uri }} style = {{ width: 80, height: 80, borderRadius: 4 }} />
+
+									<TouchableHighlight onPress = { () => setVideo('') } underlayColor = '#FFFFFF00' style = {{ width: 30, height: 30, borderRadius: 50, backgroundColor: '#DDD', position: 'absolute', top: -15, right: -15 }}>
+										<Text style = {{ textAlignVertical: 'center', textAlign: 'center', color: '#FFF', height: 30 }}>X</Text>
+									</TouchableHighlight>
+								</View>
+							) : null }
 						</View>
 
 						<Input
@@ -315,9 +320,9 @@ const OcorrencyData = props => {
 								style = {styles.input}
 								onValueChange = { (itemValue, itemIndex) => setCategory({ ...category, value: itemValue }) }
 							>
-									{ categories && categories.map(item => (
-										<Picker.Item key = { item._id } value = { item._id } label = { item.title } /> 
-									))}
+								{ categories && categories.map(item => (
+									<Picker.Item key = { item._id } value = { item._id } label = { item.title } /> 
+								))}
 							</Picker>
 						</View>
 						
