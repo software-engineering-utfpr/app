@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, TouchableHighlight, Image, ActivityIndicator, Picker } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import LinearGradient from 'react-native-linear-gradient';
+import MediaMeta from 'react-native-media-meta';
 import { Root, Popup } from 'popup-ui';
 import { Header, Input } from 'react-native-elements';
 
@@ -242,10 +243,14 @@ const OcorrencyData = props => {
 							<TouchableHighlight
 								underlayColor = '#FFFFFF00'
 								onPress = { () => {
-									if(!video.media) {
+									if(video.media !== {}) {
 										ImagePicker.launchImageLibrary({ mediaType: 'video' }, response => {
 											if(response.uri) {
-												setVideo({...video, media: response });
+												MediaMeta.get(response.path).then((metadata) => {
+													if(metadata.duration <= 30000) {
+														setVideo({...video, media: response });
+													}
+												}).catch(err => console.error(err));
 											}
 										});
 									}
