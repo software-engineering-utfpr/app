@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, TouchableHighlight, Image, ActivityIndicator, Picker } from 'react-native';
+import ImagePicker from 'react-native-image-picker';
 import LinearGradient from 'react-native-linear-gradient';
-import { Root } from 'popup-ui';
+import { Root, Popup } from 'popup-ui';
 import { Header, Input } from 'react-native-elements';
 
 import Geocoder from 'react-native-geocoding';
@@ -17,7 +18,7 @@ const GOOGLE_MAPS_APIKEY = 'AIzaSyBr2j26w3QZ77VoKhmfb4whjAGLlBhJ_0U';
 
 const OcorrencyData = props => {
 	const { navigate, state } = props.navigation;
-	const { region } = state.params;
+	// const { region } = state.params;
 
 	const [loadingScreen, setLoadingScreen] = useState(false);
 	const [location, setLocation] = useState({
@@ -26,11 +27,25 @@ const OcorrencyData = props => {
 		cep: '',
 		uf: 'PR',
 		city: 'Campo Mourão',
-		latitude: region.latitude,
-		longitude: region.longitude
+		// latitude: region.latitude,
+		// longitude: region.longitude
 	});
 	
 	const [categories, setCategories] = useState([]);
+
+	const [photos, setPhotos] = useState({
+		array: [],
+		visible: true
+	});
+	const [video, setVideo] = useState({
+		media: {},
+		visible: true
+	});
+	const [audio, setAudio] = useState({
+		media: {},
+		visible: true
+	});
+
 	const [description, setDescription] = useState({
 		value: '',
 		error: ''
@@ -55,18 +70,18 @@ const OcorrencyData = props => {
 	useEffect(() => {
 		setLoadingScreen(true);
 
-		Geocoder.init(GOOGLE_MAPS_APIKEY);
-		Geocoder.from(region.latitude, region.longitude).then(json => {
-			const number = json.results[0].address_components.filter(e => e.types.includes('street_number'));
-			const address = json.results[0].address_components.filter(e => e.types.includes('route'));
-			const cep = json.results[0].address_components.filter(e => e.types.includes('postal_code'));
+		// Geocoder.init(GOOGLE_MAPS_APIKEY);
+		// Geocoder.from(region.latitude, region.longitude).then(json => {
+		// 	const number = json.results[0].address_components.filter(e => e.types.includes('street_number'));
+		// 	const address = json.results[0].address_components.filter(e => e.types.includes('route'));
+		// 	const cep = json.results[0].address_components.filter(e => e.types.includes('postal_code'));
 
-			setLocation({
-				...location,
-				address: address.length > 0 ? address[0].long_name : '',
-				number: number.length > 0 ? number[0].long_name : '',
-				cep: cep.length > 0 ? cep[0].long_name : ''
-			});
+		// 	setLocation({
+		// 		...location,
+		// 		address: address.length > 0 ? address[0].long_name : '',
+		// 		number: number.length > 0 ? number[0].long_name : '',
+		// 		cep: cep.length > 0 ? cep[0].long_name : ''
+		// 	});
 
 			setDate({
 				...date,
@@ -96,9 +111,9 @@ const OcorrencyData = props => {
 					}
 				});
 			});
-		}).catch(error => {
-			setLoadingScreen(false);
-		});
+		// }).catch(error => {
+		// 	setLoadingScreen(false);
+		// });
 	}, []);
 
 	const inputHandlerDate = text => {
@@ -137,6 +152,15 @@ const OcorrencyData = props => {
 		return true;
 	};
 
+	const removePhoto = (index) => {
+		setPhotos({...photos, visible: false});
+
+		const newArray = photos.array;
+		newArray.splice(index, 1);
+
+		setPhotos({ visible: true, array: newArray });
+	};
+
 	const registerOccurrence = () => {
 		let error = false;
 		setDate({ ...date, error: '' });
@@ -145,7 +169,7 @@ const OcorrencyData = props => {
 		if(date.value.length == 0) {
 			error = true;
 			setDate({ ...date, error: 'Digite uma data' });
-		} else if(date.value.length != 10 || !verifyDate(date.value)) {
+		} else if(date.value.length !== 10 || !verifyDate(date.value)) {
 			error = true;
 			setDate({ ...date, error: 'Data inválida' });
 		}
@@ -153,7 +177,7 @@ const OcorrencyData = props => {
 		if(time.value.length == 0) {
 			error = true;
 			setTime({ ...time, error: 'Digite um horário' });
-		} else if(time.value.length != 5 || !verifyTime(time.value)) {
+		} else if(time.value.length !== 5 || !verifyTime(time.value)) {
 			error = true;
 			setTime({ ...time, error: 'Horário inválido' });
 		}
@@ -162,6 +186,7 @@ const OcorrencyData = props => {
 		// }
 	};
 
+	console.log(video)
 	return (
 		loadingScreen ? (
 			<Root>
@@ -188,12 +213,80 @@ const OcorrencyData = props => {
 							Selecione pelo menos uma evidência do fato denunciado.
 						</Text>
 						
-						<Text style = {[ styles.subtitle, { fontFamily: 'Raleway-SemiBold', marginTop: 0, marginBottom: 30 }]}>
+						<Text style = {[ styles.subtitle, { fontFamily: 'Raleway-SemiBold', marginTop: 0, marginBottom: 20 }]}>
 							Você pode adicionar:
 							{"\n"}- 3 imagens;
 							{"\n"}- 1 vídeo de até 30 segundos;
 							{"\n"}- 1 audio de até 30 segundos.
 						</Text>
+
+						<View style = {{ flex: 1, flexDirection: 'row', justifyContent: 'space-around', marginBottom: 15, marginHorizontal: 13 }}>
+							<TouchableHighlight
+								underlayColor = '#FFFFFF00'
+								onPress = { () => {
+									if(photos.array.length < 3) {
+										ImagePicker.launchImageLibrary({}, response => {
+											if(response.uri) {
+												setPhotos({...photos, array: photos.array.concat([response]) });
+											}
+										});
+									}
+								}}
+								style = {{ width: 60, height: 60 }}
+							>
+								<LinearGradient start = {{ x: 0, y: 0 }} end = {{ x: 1, y: 0 }} colors = {['#00AD45', '#5ECC62']} style = {{ borderRadius: 50, padding: 10 }}>
+									<Image source = {require('../../images/fonts/instagram.png')} style = {{ width: 40, height: 40 }} />
+								</LinearGradient>
+							</TouchableHighlight>
+
+							<TouchableHighlight
+								underlayColor = '#FFFFFF00'
+								onPress = { () => {
+									if(!video.media) {
+										ImagePicker.launchImageLibrary({ mediaType: 'video' }, response => {
+											if(response.uri) {
+												setVideo({...video, media: response });
+											}
+										});
+									}
+								}}
+								style = {{ width: 60, height: 60 }}
+							>
+								<LinearGradient start = {{ x: 0, y: 0 }} end = {{ x: 1, y: 0 }} colors = {['#00AD45', '#5ECC62']} style = {{ borderRadius: 50, padding: 10 }}>
+									<Image source = {require('../../images/fonts/video.png')} style = {{ width: 40, height: 40 }} />
+								</LinearGradient>
+							</TouchableHighlight>
+
+							<TouchableHighlight
+								underlayColor = '#FFFFFF00'
+								onPress = { () => {
+									if(video.media !== {}) {
+										ImagePicker.launchImageLibrary({ mediaType: 'video' }, response => {
+											if(response.uri) {
+												setVideo({...video, media: response });
+											}
+										});
+									}
+								}}
+								style = {{ width: 60, height: 60 }}
+							>
+								<LinearGradient start = {{ x: 0, y: 0 }} end = {{ x: 1, y: 0 }} colors = {['#00AD45', '#5ECC62']} style = {{ borderRadius: 50, padding: 10 }}>
+									<Image source = {require('../../images/fonts/mic.png')} style = {{ width: 40, height: 40 }} />
+								</LinearGradient>
+							</TouchableHighlight>
+						</View>
+
+						<View style = {{ flex: 1, flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: 13 }}>
+							{ photos.visible && photos.array.map((item, index) => (
+								<View key = {item.uri} style = {{ width: 80, height: 80, marginHorizontal: 10, marginVertical: 15 }}>
+									<Image source = {{ uri: item.uri }} style = {{ width: 80, height: 80, borderRadius: 4 }} />
+
+									<TouchableHighlight onPress = { () => removePhoto(index) } underlayColor = '#FFFFFF00' style = {{ width: 30, height: 30, borderRadius: 50, backgroundColor: '#DDD', position: 'absolute', top: -15, right: -15 }}>
+										<Text style = {{ textAlignVertical: 'center', textAlign: 'center', color: '#FFF', height: 30 }}>X</Text>
+									</TouchableHighlight>
+								</View>
+							)) }
+						</View>
 
 						<Input
 							inputStyle = { date.value.length == 0 ? styles.placeholder : styles.input } inputContainerStyle = {{ borderBottomWidth: 0, marginBottom: 5, width: 200 }}
