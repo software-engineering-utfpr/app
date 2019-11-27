@@ -130,6 +130,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#FF5154'
   },
+
+	containerItem: {
+		display: 'flex',
+		flexDirection: 'row',
+		marginBottom: 10,
+		marginHorizontal: 20,
+		padding: 15,
+		borderRadius: 15,
+		backgroundColor: '#FAFCFE'
+	},
   
   vertical: {
     flex: 1,

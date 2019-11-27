@@ -15,7 +15,7 @@ const Home = createStackNavigator({
 		screen: OcorrencyDataScreen
 	}
 }, {
-	initialRouteName: 'OcorrencyData',
+	initialRouteName: 'Home',
 	defaultNavigationOptions: {
 		header: null
 	}

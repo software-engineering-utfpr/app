@@ -15,23 +15,27 @@ import moment from 'moment';
 
 import { Layout } from '../../components';
 
+import { query } from '../../database';
+
 import styles from './styles';
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyBr2j26w3QZ77VoKhmfb4whjAGLlBhJ_0U';
 
 const OcorrencyData = props => {
 	const { navigate, state } = props.navigation;
-	// const { region } = state.params;
+	const { region } = state.params;
 
-	const [loadingScreen, setLoadingScreen] = useState(false);
+	const [loadingPage, setLoadingPage] = useState(false);
+	const [user, setUser] = useState({});
 	const [location, setLocation] = useState({
 		address: '',
 		number: '',
 		cep: '',
 		uf: 'PR',
 		city: 'Campo Mourão',
-		// latitude: region.latitude,
-		// longitude: region.longitude
+		latitude: region.latitude,
+		longitude: region.longitude,
+		referencePoint: ''
 	});
 	
 	const [categories, setCategories] = useState([]);
@@ -48,10 +52,7 @@ const OcorrencyData = props => {
 		value: '',
 		error: ''
 	});
-	const [referencePoint, setReferencePoint] = useState({
-		value: '',
-		error: ''
-	});
+	const [referencePointError, setReferencePointError] = useState('');
 	const [category, setCategory] = useState({
 		value: '',
 		error: ''
@@ -66,20 +67,20 @@ const OcorrencyData = props => {
 	});
 
 	useEffect(() => {
-		setLoadingScreen(true);
+		setLoadingPage(true);
 
-		// Geocoder.init(GOOGLE_MAPS_APIKEY);
-		// Geocoder.from(region.latitude, region.longitude).then(json => {
-		// 	const number = json.results[0].address_components.filter(e => e.types.includes('street_number'));
-		// 	const address = json.results[0].address_components.filter(e => e.types.includes('route'));
-		// 	const cep = json.results[0].address_components.filter(e => e.types.includes('postal_code'));
+		Geocoder.init(GOOGLE_MAPS_APIKEY);
+		Geocoder.from(region.latitude, region.longitude).then(json => {
+			const number = json.results[0].address_components.filter(e => e.types.includes('street_number'));
+			const address = json.results[0].address_components.filter(e => e.types.includes('route'));
+			const cep = json.results[0].address_components.filter(e => e.types.includes('postal_code'));
 
-		// 	setLocation({
-		// 		...location,
-		// 		address: address.length > 0 ? address[0].long_name : '',
-		// 		number: number.length > 0 ? number[0].long_name : '',
-		// 		cep: cep.length > 0 ? cep[0].long_name : ''
-		// 	});
+			setLocation({
+				...location,
+				address: address.length > 0 ? address[0].long_name : '',
+				number: number.length > 0 ? number[0].long_name : '',
+				cep: cep.length > 0 ? cep[0].long_name : ''
+			});
 
 			setDate({
 				...date,
@@ -91,11 +92,28 @@ const OcorrencyData = props => {
 				value: moment().format('HH:mm')
 			});
 
+			query('SELECT * FROM user').then(res => {
+				const user = res.rows.item(0);
+				setUser(user);
+			}).catch(err => {
+				Popup.show({
+					type: 'Danger',
+					title: 'ERRO',
+					timing: 0,
+					textBody: 'Não foi possível obter suas informações.',
+					buttontext: 'Ok',
+					callback: () => {
+						Popup.hide();
+						navigation.goBack();
+					}
+				});
+			});
+
 			axios.get('https://rio-campo-limpo.herokuapp.com/api/categories').then((res) => {
 				setCategories(res.data);
-				setLoadingScreen(false);
+				setLoadingPage(false);
 			}).catch((err) => {
-				setLoadingScreen(false);
+				setLoadingPage(false);
 				Popup.show({
 					type: 'Danger',
 					title: 'ERRO',
@@ -104,14 +122,14 @@ const OcorrencyData = props => {
 					buttontext: 'Ok',
 					callback: () => {
 						Popup.hide();
-						setLoadingScreen(false);
+						setLoadingPage(false);
 						props.navigation.goBack();
 					}
 				});
 			});
-		// }).catch(error => {
-		// 	setLoadingScreen(false);
-		// });
+		}).catch(error => {
+			setLoadingPage(false);
+		});
 	}, []);
 
 	const inputHandlerDate = text => {
@@ -148,6 +166,68 @@ const OcorrencyData = props => {
 			return false;
 
 		return true;
+	};
+
+	const uploadPhoto = (response) => {
+		setLoadingPage(true);
+		const formData = new FormData();
+		formData.append('api_key', '584136724691346');
+		formData.append('timestamp', (Date.now() / 1000));
+		formData.append('upload_preset', 'p9jvf6ai');
+		formData.append('file', { uri: response.uri, type: response.type || 'image/jpeg', name: response.fileName });
+		
+		axios.post('https://api.cloudinary.com/v1_1/dnnkqjrbi/image/upload', formData, {
+			headers: { 'X-Requested-With': 'XMLHttpRequest' }
+		}).then(res => {
+			const image = res.data.secure_url;
+			response.url = image;
+
+			setPhotos({...photos, array: photos.array.concat([response]) });
+			setLoadingPage(false);
+		}).catch(err => {
+			Popup.show({
+				type: 'Danger',
+				title: 'ERRO',
+				timing: 0,
+				textBody: 'Não foi possível salvar sua nova foto.',
+				buttontext: 'Ok',
+				callback: () => {
+					Popup.hide();
+					setLoadingPage(false);
+				}
+			});
+		});
+	};
+
+	const uploadVideo = (response, media) => {
+		setLoadingPage(true);
+		const formData = new FormData();
+		formData.append('api_key', '584136724691346');
+		formData.append('timestamp', (Date.now() / 1000));
+		formData.append('upload_preset', 'p9jvf6ai');
+		formData.append('file', { uri: response.uri, type: response.type || 'video/mp4', name: response.fileName || response.uri });
+		
+		axios.post('https://api.cloudinary.com/v1_1/dnnkqjrbi/video/upload', formData, {
+			headers: { 'X-Requested-With': 'XMLHttpRequest' }
+		}).then(res => {
+			const video = res.data.secure_url;
+			response.url = video;
+
+			setVideo(response);
+			setLoadingPage(false);
+		}).catch(err => {
+			Popup.show({
+				type: 'Danger',
+				title: 'ERRO',
+				timing: 0,
+				textBody: 'Não foi possível salvar seu vídeo.',
+				buttontext: 'Ok',
+				callback: () => {
+					Popup.hide();
+					setLoadingPage(false);
+				}
+			});
+		});
 	};
 
 	const removePhoto = (index) => {
@@ -187,12 +267,47 @@ const OcorrencyData = props => {
 		}
 
 		if(!error) {
-			setMediaError('Foi');
+			setLoadingPage(true);
+
+			axios.post('https://rio-campo-limpo.herokuapp.com/api/occurrences', {
+				category: category.value || categories[0]._id,
+				user: user ? user.id : null,
+				location,
+				date: moment(`${date.value} ${time.value}`, 'DD/MM/YYYY HH:mm'),
+				photos: photos.array.map(e => e.url),
+				video: video.url,
+				description: description.value
+			}).then(res => {
+				Popup.show({
+					type: 'Success',
+					title: 'Ocorrência Cadastrada.',
+					timing: 0,
+					textBody: 'Dados foram atualizados.',
+					buttontext: 'Ok',
+					callback: () => {
+						Popup.hide();
+						setLoadingPage(false);
+						navigate('Home');
+					}
+				});
+			}).catch(err => {
+				Popup.show({
+					type: 'Danger',
+					title: 'Ocorrência não Cadastrada',
+					timing: 0,
+					textBody: 'Verifique a internet e tente novamente mais tarde.',
+					buttontext: 'Ok',
+					callback: () => {
+						Popup.hide();
+						setLoadingPage(false);
+					}
+				});
+			});
 		}
 	};
 
 	return (
-		loadingScreen ? (
+		loadingPage ? (
 			<Root>
 				<View style = {[styles.vertical, styles.horizontal, { backgroundColor: '#FFFFFF', minHeight: '100%' }]}>
 					<ActivityIndicator size = 'large' color = '#00AD45' />
@@ -221,7 +336,6 @@ const OcorrencyData = props => {
 							Você pode adicionar:
 							{"\n"}- 3 imagens;
 							{"\n"}- 1 vídeo de até 30 segundos.
-							{/* {"\n"}- 1 audio de até 30 segundos. */}
 						</Text>
 
 						<Text style = {{ fontFamily: 'Raleway-Regular', fontSize: 14, color: '#FF5154', textAlign: 'center', marginBottom: 8 }}> {mediaError} </Text>
@@ -232,7 +346,19 @@ const OcorrencyData = props => {
 									if(photos.array.length < 3) {
 										ImagePicker.launchImageLibrary({}, response => {
 											if(response.uri) {
-												setPhotos({...photos, array: photos.array.concat([response]) });
+												uploadPhoto(response);
+											}
+										});
+									} else {
+										Popup.show({
+											type: 'Danger',
+											title: 'Já exitem 3 imagens.',
+											timing: 0,
+											textBody: 'Apague uma para poder adicionar mais.',
+											buttontext: 'Ok',
+											callback: () => {
+												Popup.hide();
+												setLoadingPage(false);
 											}
 										});
 									}
@@ -252,9 +378,33 @@ const OcorrencyData = props => {
 											if(response.uri) {
 												MediaMeta.get(response.path).then((metadata) => {
 													if(metadata.duration <= 30000) {
-														setVideo(response);
+														uploadVideo(response);
+													} else {
+														Popup.show({
+															type: 'Danger',
+															title: 'Vídeo inválido.',
+															timing: 0,
+															textBody: 'Este vídeo possui mais de 30 segundos.',
+															buttontext: 'Ok',
+															callback: () => {
+																Popup.hide();
+																setLoadingPage(false);
+															}
+														});
 													}
 												}).catch(err => console.error(err));
+											}
+										});
+									} else {
+										Popup.show({
+											type: 'Danger',
+											title: 'Já exite 1 vídeo.',
+											timing: 0,
+											textBody: 'Apague o vídeo para poder adicionar outro.',
+											buttontext: 'Ok',
+											callback: () => {
+												Popup.hide();
+												setLoadingPage(false);
 											}
 										});
 									}
@@ -331,10 +481,10 @@ const OcorrencyData = props => {
 						/>
 
 						<Input
-							inputStyle = { referencePoint.value.length == 0 ? styles.placeholder : styles.input } inputContainerStyle = {{ borderBottomWidth: 0, marginBottom: 5 }}
-							placeholder = 'Ponto de referência' label = { referencePoint.value.length == 0 ? '' : 'Ponto de referência' } labelStyle = { styles.label }
-							value = {referencePoint.value} onChangeText = { value => setReferencePoint({ ...referencePoint, value, error: '' }) }
-							errorMessage = {referencePoint.error} errorStyle = { styles.fontError }
+							inputStyle = { location.referencePoint.length == 0 ? styles.placeholder : styles.input } inputContainerStyle = {{ borderBottomWidth: 0, marginBottom: 5 }}
+							placeholder = 'Ponto de referência' label = { location.referencePoint.length == 0 ? '' : 'Ponto de referência' } labelStyle = { styles.label }
+							value = {location.referencePoint} onChangeText = { value => { setLocation({ ...location, referencePoint: value }); setReferencePointError(''); } }
+							errorMessage = {referencePointError} errorStyle = { styles.fontError }
 						/>
 					
 						<Text style = {[ styles.subtitle, { marginTop: 0, fontSize: 14 }]}>

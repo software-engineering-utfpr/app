@@ -5,6 +5,7 @@ import { Header } from 'react-native-elements';
 import { Popup, Root } from 'popup-ui';
 
 import axios from 'axios';
+import moment from 'moment';
 
 import { Layout } from '../../components';
 import { query } from '../../database';
@@ -25,8 +26,8 @@ const Home = props => {
 
 			if(user) {
 				axios.get(`https://rio-campo-limpo.herokuapp.com/api/occurrences/user/${user.id}`).then((res) => {
+					setOccurences(res.data);
 					setLoadingScreen(false);
-					setOccurences(res.data || []);
 				}).catch((err) => {
 					Popup.show({
 						type: 'Danger',
@@ -42,7 +43,6 @@ const Home = props => {
 				});
 			}
 
-			setLoadingScreen(false);
 			setUser(user);
 		}).catch(err => {
 			Popup.show({
@@ -115,8 +115,20 @@ const Home = props => {
 					</ScrollView>
 				) : (
 					<ScrollView>
+						<Text style = { styles.title }>Bem-vindo</Text>
+						<Text style = { styles.subtitle }>
+							Aqui estão as suas ocorrências.
+						</Text>
 						<View style = {{ paddingTop: 20, paddingBottom: 10 }}>
-							{ occurrences.map((item) => (<Text>jjjj</Text>)) }
+							{ occurrences.map(item => (
+								<View key = { item._id } style = { styles.containerItem }>
+									<View style = {{ width: 20, height: 20, borderRadius: 50, marginRight: 10, backgroundColor: '#2F80ED' }} />
+									<View style = {{ paddingRight: 30, paddingBottom: 50, width: '100%' }}>
+										<Text style = {{ fontFamily: 'Raleway-Bold', fontSize: 18, color: '#2D2E2E' }}> { item._id.substring(6) } </Text>
+										<Text style = {{ fontFamily: 'Raleway-Regular', fontSize: 14 }}> Realizada { moment(item.date).fromNow() } </Text>
+									</View>
+								</View>
+							)) }
 						</View>
 					</ScrollView>
 				) }
