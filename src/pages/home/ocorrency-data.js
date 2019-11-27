@@ -6,6 +6,7 @@ import Video from 'react-native-video';
 import MediaMeta from 'react-native-media-meta';
 import { Root, Popup } from 'popup-ui';
 import { Header, Input } from 'react-native-elements';
+import { FilePicker } from 'react-native-file-chooser';
 
 import Geocoder from 'react-native-geocoding';
 
@@ -40,7 +41,8 @@ const OcorrencyData = props => {
 		visible: true
 	});
 	const [video, setVideo] = useState('');
-	const [audio, setAudio] = useState({});
+
+	const [mediaError, setMediaError] = useState('');
 
 	const [description, setDescription] = useState({
 		value: '',
@@ -161,6 +163,7 @@ const OcorrencyData = props => {
 		let error = false;
 		setDate({ ...date, error: '' });
 		setTime({ ...time, error: '' });
+		setMediaError('');
 
 		if(date.value.length == 0) {
 			error = true;
@@ -178,11 +181,16 @@ const OcorrencyData = props => {
 			setTime({ ...time, error: 'Horário inválido' });
 		}
 
-		// if(!error) {
-		// }
+		if(photos.array.length == 0 && !video) {
+			error = true;
+			setMediaError('Adicione pelo menos 1 media');
+		}
+
+		if(!error) {
+			setMediaError('Foi');
+		}
 	};
 
-	console.log(video)
 	return (
 		loadingScreen ? (
 			<Root>
@@ -212,10 +220,11 @@ const OcorrencyData = props => {
 						<Text style = {[ styles.subtitle, { fontFamily: 'Raleway-SemiBold', marginTop: 0, marginBottom: 20 }]}>
 							Você pode adicionar:
 							{"\n"}- 3 imagens;
-							{"\n"}- 1 vídeo de até 30 segundos;
-							{"\n"}- 1 audio de até 30 segundos.
+							{"\n"}- 1 vídeo de até 30 segundos.
+							{/* {"\n"}- 1 audio de até 30 segundos. */}
 						</Text>
 
+						<Text style = {{ fontFamily: 'Raleway-Regular', fontSize: 14, color: '#FF5154', textAlign: 'center', marginBottom: 8 }}> {mediaError} </Text>
 						<View style = {{ flex: 1, flexDirection: 'row', justifyContent: 'space-around', marginBottom: 15, marginHorizontal: 13 }}>
 							<TouchableHighlight
 								underlayColor = '#FFFFFF00'
@@ -256,24 +265,6 @@ const OcorrencyData = props => {
 									<Image source = {require('../../images/fonts/video.png')} style = {{ width: 40, height: 40 }} />
 								</LinearGradient>
 							</TouchableHighlight>
-
-							<TouchableHighlight
-								underlayColor = '#FFFFFF00'
-								onPress = { () => {
-									if(video.media !== {}) {
-										ImagePicker.launchImageLibrary({ mediaType: 'video' }, response => {
-											if(response.uri) {
-												setAudio(response);
-											}
-										});
-									}
-								}}
-								style = {{ width: 60, height: 60 }}
-							>
-								<LinearGradient start = {{ x: 0, y: 0 }} end = {{ x: 1, y: 0 }} colors = {['#00AD45', '#5ECC62']} style = {{ borderRadius: 50, padding: 10 }}>
-									<Image source = {require('../../images/fonts/mic.png')} style = {{ width: 40, height: 40 }} />
-								</LinearGradient>
-							</TouchableHighlight>
 						</View>
 
 						<View style = {{ flex: 1, flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: 13 }}>
@@ -298,21 +289,27 @@ const OcorrencyData = props => {
 							) : null }
 						</View>
 
-						<Input
-							inputStyle = { date.value.length == 0 ? styles.placeholder : styles.input } inputContainerStyle = {{ borderBottomWidth: 0, marginBottom: 5, width: 200 }}
-							placeholder = 'Data' keyboardType = 'number-pad'
-							label = { date.value.length == 0 ? '' : 'Data*' } labelStyle = { styles.label }
-							value = {date.value} onChangeText = { value => setDate({ ...date, value: inputHandlerDate(value), error: '' }) }
-							errorMessage = {date.error} errorStyle = {[ { left: 15 }, styles.fontError ]}
-						/>
+						<View style = {{ flex: 1, flexDirection: 'row', marginBottom: 5, justifyContent: 'space-between', marginRight: 20, marginTop: 10 }}>
+							<View style = {{ width: 200 }}>
+								<Input
+									inputStyle = {[{ margin: 0 }, date.value.length == 0 ? styles.placeholder : styles.input ]} inputContainerStyle = {{ borderBottomWidth: 0, margin: 0, width: 200 }}
+									placeholder = 'Data' keyboardType = 'number-pad'
+									label = { date.value.length == 0 ? '' : 'Data*' } labelStyle = { styles.label }
+									value = {date.value} onChangeText = { value => setDate({ ...date, value: inputHandlerDate(value), error: '' }) }
+									errorMessage = {date.error} errorStyle = {[ { left: 15 }, styles.fontError ]}
+								/>
+							</View>
 
-						<Input
-							inputStyle = { time.value.length == 0 ? styles.placeholder : styles.input } inputContainerStyle = {{ borderBottomWidth: 0, marginBottom: 5, width: 130 }}
-							placeholder = 'Horário' keyboardType = 'number-pad'
-							label = { time.value.length == 0 ? '' : 'Horário*' } labelStyle = { styles.label }
-							value = {time.value} onChangeText = { value => setTime({ ...time, value: inputHandlerTime(value), error: '' }) }
-							errorMessage = {time.error} errorStyle = {[ { left: 15 }, styles.fontError ]}
-						/>
+							<View style = {{ width: 160, marginLeft: -30 }}>
+								<Input
+									inputStyle = {[{ margin: 0 }, time.value.length == 0 ? styles.placeholder : styles.input ]} inputContainerStyle = {{ borderBottomWidth: 0, margin: 0, width: 160 }}
+									placeholder = 'Horário' keyboardType = 'number-pad'
+									label = { time.value.length == 0 ? '' : 'Horário*' } labelStyle = { styles.label }
+									value = {time.value} onChangeText = { value => setTime({ ...time, value: inputHandlerTime(value), error: '' }) }
+									errorMessage = {time.error} errorStyle = {[ { left: 15 }, styles.fontError ]}
+								/>
+							</View>
+						</View>
 
 						<View style = {{ borderRadius: 15, overflow: 'hidden', marginHorizontal: 10, marginBottom: 10 }}>
 							<Picker
