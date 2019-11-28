@@ -6,7 +6,7 @@
     "start": "react-native start",
     "android": "react-native run-android",
     "log:android": "react-native log-android",
-    "build:android": "cd android && gradlew assembleRelease && cd ..",
+    "build:android": "cd android && gradlew app:assembleRelease && cd ..",
     "android:release": "react-native run-android --variant=release",
     "test": "jest",
     "lint": "eslint --fix ."

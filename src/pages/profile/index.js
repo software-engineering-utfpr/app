@@ -72,22 +72,22 @@ const Profile = props => {
 		setPhone({ ...phone, error: '' });
 		setPassword({ ...password, error: '' });
 
-		if(name.value.length == 0) {
+		if(name.value.length === 0) {
 			error = true;
 			setName({ ...name, error: 'Digite seu nome' });
 		}
 
-		if(cpf.value.length != 14 || !verifyCPF(cpf.value)) {
+		if(cpf.value.length !== 14 || !verifyCPF(cpf.value)) {
 			error = true;
 			setCPF({ ...cpf, error: 'CPF inválido' });
 		}
 
-		if(users.map(e => e.phone).includes(phone.value) && users[users.map(e => e.phone).indexOf(phone.value)]._id != id) {
+		if(users.map(e => e.phone).includes(phone.value) && users[users.map(e => e.phone).indexOf(phone.value)]._id !== id) {
 			error = true;
 			setPhone({ ...phone, error: 'Telefone já cadastrado' });
 		}
 
-		if(phone.value.length != 15) {
+		if(phone.value.length !== 15) {
 			error = true;
 			setPhone({ ...phone, error: 'Telefone inválido' });
 		}

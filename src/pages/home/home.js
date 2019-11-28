@@ -41,6 +41,8 @@ const Home = props => {
 						}
 					});
 				});
+			} else {
+				setLoadingScreen(false);
 			}
 
 			setUser(user);

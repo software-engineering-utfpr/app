@@ -245,7 +245,7 @@ const OcorrencyData = props => {
 		setTime({ ...time, error: '' });
 		setMediaError('');
 
-		if(date.value.length == 0) {
+		if(date.value.length === 0) {
 			error = true;
 			setDate({ ...date, error: 'Digite uma data' });
 		} else if(date.value.length !== 10 || !verifyDate(date.value)) {
@@ -253,7 +253,7 @@ const OcorrencyData = props => {
 			setDate({ ...date, error: 'Data inválida' });
 		}
 
-		if(time.value.length == 0) {
+		if(time.value.length === 0) {
 			error = true;
 			setTime({ ...time, error: 'Digite um horário' });
 		} else if(time.value.length !== 5 || !verifyTime(time.value)) {
@@ -261,7 +261,7 @@ const OcorrencyData = props => {
 			setTime({ ...time, error: 'Horário inválido' });
 		}
 
-		if(photos.array.length == 0 && !video) {
+		if(photos.array.length === 0 && !video) {
 			error = true;
 			setMediaError('Adicione pelo menos 1 media');
 		}
@@ -463,7 +463,7 @@ const OcorrencyData = props => {
 
 						<View style = {{ borderRadius: 15, overflow: 'hidden', marginHorizontal: 10, marginBottom: 10 }}>
 							<Picker
-								selectedValue = {[ category.value, { marginBottom: 0 } ]}
+								selectedValue = { category.value }
 								style = {styles.input}
 								onValueChange = { (itemValue, itemIndex) => setCategory({ ...category, value: itemValue }) }
 							>
@@ -491,7 +491,7 @@ const OcorrencyData = props => {
 							Insira informações como ponto de referência, nome da empresa, área do dano, entre outros...
 						</Text>
 
-						<TouchableHighlight underlayColor = '#FFFFFF00' onPress = { () => registerOccurrence() } style = {{ marginTop: 20, marginHorizontal: 13 }}>
+						<TouchableHighlight underlayColor = '#FFFFFF00' onPress = { registerOccurrence } style = {{ marginTop: 20, marginHorizontal: 13 }}>
 							<LinearGradient start = {{ x: 0, y: 0 }} end = {{ x: 1, y: 0 }} colors = {['#00AD45', '#5ECC62']} style = { styles.buttonGradientAbsolute }>
 								<Text style = { styles.fontButtonGradient }> Registrar Ocorrência </Text>
 							</LinearGradient>

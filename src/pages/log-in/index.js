@@ -27,12 +27,12 @@ const Login = props => {
 		setPhone({ ...phone, error: '' });
 		setPassword({ ...password, error: '' });
 
-		if(phone.value.length != 15) {
+		if(phone.value.length !== 15) {
 			error = true;
 			setPhone({ ...phone, error: 'Telefone inválido' });
 		}
 
-		if(password.value.length == 0) {
+		if(password.value.length === 0) {
 			error = true;
 			setPassword({ ...password, error: 'Digite uma senha' });
 		}
