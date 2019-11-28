@@ -15,6 +15,20 @@ import styles from './styles';
 const Home = props => {
 	const { navigate } = props.navigation;
 
+	const tags = [{
+    value: 'pending',
+    color: '#2F80ED',
+    label: 'Pendente'
+  }, {
+    value: 'aproved',
+    color: '#00AD45',
+    label: 'Aprovado'
+  }, {
+    value: 'reproved',
+    color: '#FF7D7A',
+    label: 'Reprovado'
+  }];
+
 	const [user, setUser] = useState({});
 	const [occurrences, setOccurences] = useState([]);
 	const [loadingScreen, setLoadingScreen] = useState(false);
@@ -124,10 +138,11 @@ const Home = props => {
 						<View style = {{ paddingTop: 20, paddingBottom: 10 }}>
 							{ occurrences.map(item => (
 								<View key = { item._id } style = { styles.containerItem }>
-									<View style = {{ width: 20, height: 20, borderRadius: 50, marginRight: 10, backgroundColor: '#2F80ED' }} />
+									<View style = {{ width: 20, height: 20, borderRadius: 50, marginRight: 10, backgroundColor: tags[tags.map(e => e.value).indexOf(item.status)].color }} />
 									<View style = {{ paddingRight: 30, paddingBottom: 50, width: '100%' }}>
 										<Text style = {{ fontFamily: 'Raleway-Bold', fontSize: 18, color: '#2D2E2E' }}> { item._id.substring(6) } </Text>
 										<Text style = {{ fontFamily: 'Raleway-Regular', fontSize: 14 }}> Realizada { moment(item.date).fromNow() } </Text>
+										<Text style = {{ fontFamily: 'Raleway-Regular', fontSize: 14 }}> Ocorrência { tags[tags.map(e => e.value).indexOf(item.status)].label } </Text>
 									</View>
 								</View>
 							)) }
