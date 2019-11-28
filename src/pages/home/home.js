@@ -25,7 +25,7 @@ const Home = props => {
     label: 'Aprovada'
   }, {
     value: 'reproved',
-    color: '#FF7D7A',
+    color: '#EB3B5A',
     label: 'Reprovada'
   }];
 
