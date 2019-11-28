@@ -82,7 +82,7 @@ const Profile = props => {
 			setCPF({ ...cpf, error: 'CPF inválido' });
 		}
 
-		if(users.map(e => e.phone).includes(phone.value) && users[users.map(e => e.phone).indexOf(phone.value)]._id !== id) {
+		if(users.map(e => e.phone).includes(phone.value) && users[users.map(e => e.phone).indexOf(phone.value)]._id !== user.id) {
 			error = true;
 			setPhone({ ...phone, error: 'Telefone já cadastrado' });
 		}
